@@ -1,5 +1,5 @@
 :root {
-  --primary: #8b5cf6; /* Soft purple */
+  --primary: #8b5cf6; 
   --primary-gradient: linear-gradient(135deg, #a78bfa 0%, #7c3aed 100%);
   --text-main: #1e293b;
   --text-muted: #64748b;
@@ -19,7 +19,6 @@
 
 body {
   font-family: var(--font);
-  /* Soft background so the white frosted glass stands out */
   background: linear-gradient(135deg, #f5f3ff 0%, #e2e8f0 100%);
   background-attachment: fixed;
   color: var(--text-main);
@@ -27,7 +26,7 @@ body {
   min-height: 100vh;
 }
 
-/* Frosted Glass Utility Class */
+/* Frosted Glass Utility */
 .glass {
   background: var(--bg-glass);
   backdrop-filter: blur(16px);
@@ -36,7 +35,7 @@ body {
   box-shadow: var(--shadow-soft);
 }
 
-/* Apple-style Floating Navbar */
+/* Floating Navbar */
 .navbar {
   position: sticky;
   top: 1rem;
@@ -96,14 +95,7 @@ body {
   color: var(--text-main);
 }
 
-/* Layout Containers */
-.container {
-  max-width: 1000px;
-  margin: 0 auto;
-  padding: 3rem 1.5rem;
-}
-
-/* Buttons matching UI kit */
+/* Buttons */
 .btn {
   display: inline-flex;
   align-items: center;
@@ -123,7 +115,7 @@ body {
 
 .btn-primary {
   background: var(--primary-gradient);
-  color: #ffffff;
+  color: #ffffff !important; /* Fixed contrast issue */
   box-shadow: 0 4px 15px rgba(124, 58, 237, 0.3);
 }
 
@@ -134,7 +126,28 @@ body {
   backdrop-filter: blur(10px);
 }
 
-/* Hero Section */
+/* New Disabled Button State */
+.btn-disabled {
+  background: rgba(226, 232, 240, 0.6);
+  color: #94a3b8 !important;
+  border: 1px solid var(--border-glass);
+  backdrop-filter: blur(10px);
+  cursor: not-allowed;
+  box-shadow: none;
+  pointer-events: none; /* Prevents clicking */
+}
+
+.btn-disabled:hover {
+  transform: none;
+}
+
+/* Layout & Cards */
+.container {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 3rem 1.5rem;
+}
+
 .hero {
   text-align: center;
   padding: 6rem 1.5rem 4rem;
@@ -152,7 +165,7 @@ body {
 .hero p {
   font-size: 1.15rem;
   color: var(--text-muted);
-  max-width: 600px;
+  max-width: 700px;
   margin: 0 auto 2.5rem;
 }
 
@@ -163,7 +176,6 @@ body {
   flex-wrap: wrap;
 }
 
-/* Dashboard Style Cards */
 .grid-3 {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -186,16 +198,25 @@ body {
   font-size: 1.25rem;
 }
 
-.card p {
-  color: var(--text-muted);
-  font-size: 0.95rem;
+/* Clean Animations */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
 }
+
+.animate-up {
+  animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  opacity: 0;
+}
+
+.delay-1 { animation-delay: 0.1s; }
+.delay-2 { animation-delay: 0.2s; }
+.delay-3 { animation-delay: 0.3s; }
+.delay-4 { animation-delay: 0.4s; }
 
 /* Mobile Responsive */
 @media (max-width: 768px) {
-  .nav-toggle {
-    display: block;
-  }
+  .nav-toggle { display: block; }
   .nav-links {
     display: none;
     position: absolute;
@@ -211,7 +232,5 @@ body {
     border: 1px solid var(--border-glass);
     box-shadow: var(--shadow-soft);
   }
-  .nav-links.active {
-    display: flex;
-  }
+  .nav-links.active { display: flex; }
 }
