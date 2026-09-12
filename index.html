@@ -9,51 +9,52 @@
 </head>
 <body>
 
-  <!-- Added 'glass' class for frosted apple effect -->
-  <header class="navbar glass">
+  <header class="navbar glass animate-up">
     <div class="nav-container">
       <a href="index.html" class="logo">Teen<span>Tutors</span></a>
       <button class="nav-toggle" aria-label="Toggle Navigation">☰</button>
       <ul class="nav-links">
         <li><a href="index.html">Home</a></li>
         <li><a href="about.html">About</a></li>
+        <li><a href="tutors.html">Tutors</a></li>
         <li><a href="subjects.html">Subjects</a></li>
         <li><a href="contact.html">Contact</a></li>
-        <li><a href="book.html" class="btn btn-primary">Book Session</a></li>
+        <!-- Disabled Booking Button -->
+        <li><a href="#" class="btn btn-disabled">Booking Unavailable</a></li>
       </ul>
     </div>
   </header>
 
   <main>
     <section class="hero">
-      <h1>Master Your Subjects.<br>Build Confidence.</h1>
-      <p>Targeted conceptual learning for middle and high school students. Clear explanations, customized pacing, and verified grade improvement.</p>
-      <div class="hero-actions">
-        <a href="book.html" class="btn btn-primary">Reserve a Slot</a>
-        <a href="subjects.html" class="btn btn-secondary">View Pricing</a>
+      <h1 class="animate-up delay-1">Master Your Subjects.<br>Build Confidence.</h1>
+      <p class="animate-up delay-2">Targeted conceptual learning for all ages. We offer specialized tutoring for <strong>Primary</strong> (Prep–Yr2, Yr3–4, Yr5–6) and <strong>Secondary</strong> (Yr7–8, Yr9) students.</p>
+      <div class="hero-actions animate-up delay-3">
+        <!-- Disabled Booking Button -->
+        <a href="#" class="btn btn-disabled">Booking Unavailable</a>
+        <a href="subjects.html" class="btn btn-secondary">View Subjects</a>
       </div>
     </section>
 
     <section class="container">
       <div class="grid-3">
-        <!-- Added 'glass' class to cards -->
-        <div class="card glass">
-          <h3>Individualized Curriculum</h3>
-          <p>Lessons target your student's specific gaps instead of repeating generic textbook problems.</p>
+        <div class="card glass animate-up delay-2">
+          <h3>Primary (Prep - Year 6)</h3>
+          <p>Foundational skills in reading, writing, and early mathematics broken down into Prep-Yr2, Yr3-4, and Yr5-6 tiers.</p>
         </div>
-        <div class="card glass">
-          <h3>Flexible Scheduling</h3>
-          <p>Book recurring weekly slots or single exam-prep intensives directly through our live calendar.</p>
+        <div class="card glass animate-up delay-3">
+          <h3>Secondary (Year 7 - 9)</h3>
+          <p>Advanced conceptual learning, study habits, and targeted support for early high school mathematics and English.</p>
         </div>
-        <div class="card glass">
+        <div class="card glass animate-up delay-4">
           <h3>Proven Results</h3>
-          <p>Over 90% of regular students improve by at least one full letter grade within 8 weeks.</p>
+          <p>Over 90% of regular students improve by at least one full letter grade within 8 weeks of consistent tutoring.</p>
         </div>
       </div>
     </section>
   </main>
 
-  <footer style="text-align: center; padding: 3rem; color: var(--text-muted); font-size: 0.85rem;">
+  <footer class="animate-up delay-4" style="text-align: center; padding: 3rem; color: var(--text-muted); font-size: 0.85rem;">
     <p>&copy; 2026 Teen Tutors. All rights reserved.</p>
   </footer>
 
