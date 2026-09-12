@@ -1,2 +1,0 @@
-# Teen-Tutors
-Tutoring business
