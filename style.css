@@ -389,3 +389,108 @@ footer {
   .nav-links { display: none; }
   .slider-container .slide { flex: 0 0 100%; }
 }
+
+/* =========================================
+   TUTORS & LEADERSHIP PROFILE STYLES
+   ========================================= */
+
+.profile-section {
+  background: var(--white);
+  border-radius: 30px;
+  padding: 4rem;
+  box-shadow: var(--shadow-lg);
+  margin-bottom: 5rem;
+}
+
+.profile-grid {
+  display: grid;
+  grid-template-columns: 1fr 1.5fr;
+  gap: 4rem;
+  align-items: start;
+}
+
+.profile-image-container {
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15); /* Soft, deep Apple shadow */
+  background: #f8f8f8;
+  position: relative;
+}
+
+.profile-img {
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.profile-image-container:hover .profile-img {
+  transform: scale(1.03); /* Subtle zoom on hover */
+}
+
+.profile-header h2 {
+  font-size: 3rem;
+  letter-spacing: -0.03em;
+  margin-bottom: 0.25rem;
+  color: var(--text-main);
+}
+
+.profile-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--primary-blue);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  display: block;
+  margin-bottom: 2rem;
+}
+
+.profile-divider {
+  border: none;
+  height: 1px;
+  background: rgba(0, 0, 0, 0.08); /* Very thin, subtle line */
+  margin: 1.5rem 0;
+}
+
+.profile-detail-group h3 {
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--text-muted);
+  margin-bottom: 0.5rem;
+}
+
+.profile-detail-group p {
+  font-size: 1.15rem;
+  line-height: 1.7;
+  color: var(--text-main);
+}
+
+.profile-contact-link {
+  display: inline-block;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--primary-blue);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.profile-contact-link:hover {
+  color: #012454;
+  text-decoration: underline;
+}
+
+/* Responsive adjustments for phones/tablets */
+@media (max-width: 900px) {
+  .profile-section {
+    padding: 2rem;
+  }
+  .profile-grid {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+  .profile-header h2 {
+    font-size: 2.2rem;
+  }
+}
