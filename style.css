@@ -406,7 +406,7 @@ footer {
   display: grid;
   grid-template-columns: 1fr 1.5fr;
   gap: 4rem;
-  align-items: start;
+  align-items: center; /* PERFECTLY CENTERS THE PHOTO VERTICALLY */
 }
 
 .profile-image-container {
@@ -415,6 +415,8 @@ footer {
   box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15); /* Soft, deep Apple shadow */
   background: #f8f8f8;
   position: relative;
+  max-width: 400px; /* PREVENTS THE PHOTO FROM GETTING TOO WIDE */
+  margin: 0 auto; /* CENTERS THE PHOTO HORIZONTALLY IN ITS COLUMN */
 }
 
 .profile-img {
