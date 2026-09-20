@@ -2,798 +2,1266 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#ffffff" />
+  <meta name="description" content="Teen Tutors - By students, for students. Private and group tutoring for years Prep to 9 in the Geelong & Surf Coast Region." />
   <title>Teen Tutors | Geelong & Surf Coast</title>
+  
+  <link rel="preload" as="image" href="storyline-time-limit.jpg" />
+  <link rel="preload" as="image" href="6b6f5709-e9af-4224-b2c2-bf3aded32ff0.jpg" />
+
   <style>
-    /* =========================================
-       CSS VARIABLES & RESET
-       ========================================= */
     :root {
       --primary-blue: #023e8a;
+      --primary-blue-hover: #012a5e;
       --primary-blue-light: #e6f0fa;
-      --bg-color: #f5f5f7; /* Apple sleek light grey */
+      --bg-color: #f5f5f7;
       --text-main: #1d1d1f;
       --text-muted: #86868b;
+      --border-glass: rgba(255, 255, 255, 0.75);
+      --glass-bg: rgba(255, 255, 255, 0.85);
       --white: #ffffff;
-      --shadow-sm: 0 4px 12px rgba(0, 0, 0, 0.05);
-      --shadow-md: 0 12px 24px rgba(0, 0, 0, 0.08);
-      --shadow-lg: 0 25px 50px -12px rgba(0, 0, 0, 0.15), 0 0 0 1px rgba(0,0,0,0.03);
+      --shadow-sm: 0 4px 12px rgba(0, 0, 0, 0.06), 0 1px 3px rgba(0, 0, 0, 0.04);
+      --shadow-md: 0 16px 36px -4px rgba(2, 62, 138, 0.12), 0 10px 24px -2px rgba(0, 0, 0, 0.12);
+      --shadow-lg: 0 28px 64px -8px rgba(2, 62, 138, 0.18), 0 20px 40px -4px rgba(0, 0, 0, 0.16);
       --radius-sm: 12px;
-      --radius-md: 20px;
-      --radius-lg: 30px;
-      --font: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      --radius-md: 18px;
+      --radius-lg: 24px;
+      --radius-pill: 9999px;
+      --font: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
     }
 
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+    }
+
     html { scroll-behavior: smooth; }
-    
+
     body {
       font-family: var(--font);
       background-color: var(--bg-color);
       color: var(--text-main);
+      line-height: 1.55;
       overflow-x: hidden;
+      width: 100%;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
       -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      text-rendering: optimizeLegibility;
     }
 
-    /* =========================================
-       SPA VIEW MANAGEMENT
-       ========================================= */
-    .view-section {
+    main {
+      flex: 1 0 auto;
+      width: 100%;
+    }
+
+    .view {
       display: none;
-      animation: fadeIn 0.4s ease forwards;
+      opacity: 0;
+      transform: translateY(12px);
+      transition: opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1), transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      will-change: opacity, transform;
     }
-    .view-section.active { display: block; }
-
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(10px); }
-      to { opacity: 1; transform: translateY(0); }
+    
+    .view.active {
+      display: block;
+      opacity: 1;
+      transform: translateY(0);
     }
 
-    /* =========================================
-       NAVIGATION
-       ========================================= */
     .navbar {
       position: fixed;
-      top: 0; width: 100%;
-      background: rgba(255, 255, 255, 0.85);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
+      top: 0; left: 0; right: 0;
+      width: 100%;
+      background: var(--glass-bg);
+      backdrop-filter: blur(24px) saturate(180%);
+      -webkit-backdrop-filter: blur(24px) saturate(180%);
       z-index: 1000;
-      border-bottom: 1px solid rgba(0,0,0,0.05);
-      transition: box-shadow 0.3s ease;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
     }
-    .navbar.scrolled { box-shadow: var(--shadow-sm); }
 
     .nav-container {
       max-width: 1200px;
       margin: 0 auto;
-      padding: 1rem 2rem;
+      padding: 0.85rem 1.5rem;
       display: flex;
       justify-content: space-between;
       align-items: center;
     }
 
-    .brand-text {
-      font-size: 1.25rem; font-weight: 700;
-      color: var(--text-main); letter-spacing: -0.5px;
-      cursor: pointer;
+    .brand {
+      display: flex; align-items: center; gap: 0.75rem;
+      cursor: pointer; user-select: none;
     }
+
+    .brand-icon {
+      width: 34px; height: 34px;
+      background: linear-gradient(135deg, #023e8a 0%, #0077b6 100%);
+      border-radius: 9px; display: flex; align-items: center; justify-content: center;
+      color: var(--white); font-weight: 800; font-size: 1rem;
+      box-shadow: 0 4px 10px rgba(2, 62, 138, 0.25);
+    }
+
+    .brand-text { font-size: 1.25rem; font-weight: 700; color: var(--text-main); letter-spacing: -0.03em; }
     .brand-text .highlight { color: var(--primary-blue); }
 
-    .nav-links {
-      display: flex; gap: 2rem; list-style: none;
-    }
+    .nav-links { display: flex; gap: 1.75rem; list-style: none; align-items: center; }
     .nav-links a {
-      text-decoration: none; color: var(--text-muted);
-      font-weight: 500; font-size: 0.95rem;
-      transition: color 0.3s ease; cursor: pointer;
+      text-decoration: none; color: var(--text-muted); font-weight: 500;
+      font-size: 0.92rem; transition: color 0.2s ease; cursor: pointer;
+      padding: 0.4rem 0.2rem; position: relative;
     }
     .nav-links a:hover, .nav-links a.active { color: var(--primary-blue); }
-
-    /* Mobile Hamburger & Drawer */
-    .hamburger {
-      display: none; flex-direction: column; gap: 5px;
-      background: none; border: none; cursor: pointer;
-      z-index: 1001;
-    }
-    .hamburger span {
-      display: block; width: 25px; height: 2px;
-      background-color: var(--text-main);
-      transition: 0.3s ease;
-    }
-    .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
-    .hamburger.open span:nth-child(2) { opacity: 0; }
-    .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
-
-    .mobile-drawer {
-      position: fixed; top: 0; left: 0; width: 100%; height: 100vh;
-      background: rgba(255, 255, 255, 0.95);
-      backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px);
-      display: flex; flex-direction: column;
-      align-items: center; justify-content: center; gap: 2rem;
-      z-index: 999;
-      opacity: 0; pointer-events: none;
-      transition: opacity 0.3s ease;
-    }
-    .mobile-drawer.open { opacity: 1; pointer-events: all; }
-    .mobile-drawer a {
-      font-size: 1.5rem; font-weight: 600; color: var(--text-main);
-      text-decoration: none;
+    .nav-links a.active { font-weight: 600; }
+    .nav-links a.active::after {
+      content: ""; position: absolute; bottom: -2px; left: 0; right: 0;
+      height: 2px; background: var(--primary-blue); border-radius: 2px;
     }
 
-    /* =========================================
-       HERO SECTION
-       ========================================= */
+    .nav-hamburger {
+      display: none; background: transparent; border: none; cursor: pointer;
+      padding: 0.5rem; border-radius: 8px; flex-direction: column; gap: 5px; z-index: 1100;
+    }
+    .nav-hamburger span {
+      display: block; width: 22px; height: 2px; background-color: var(--text-main);
+      border-radius: 2px; transition: transform 0.3s ease, opacity 0.3s ease;
+    }
+    .nav-hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .nav-hamburger.open span:nth-child(2) { opacity: 0; }
+    .nav-hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+    .mobile-menu-drawer {
+      display: none; position: fixed; top: 60px; left: 0; right: 0;
+      background: rgba(255, 255, 255, 0.96); backdrop-filter: blur(28px) saturate(180%);
+      -webkit-backdrop-filter: blur(28px) saturate(180%);
+      border-bottom: 1px solid rgba(0, 0, 0, 0.08); padding: 1.5rem 2rem 2rem;
+      flex-direction: column; gap: 1rem; box-shadow: 0 16px 36px rgba(0, 0, 0, 0.12);
+      z-index: 999; transform: translateY(-10px); opacity: 0;
+      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease;
+      will-change: transform, opacity;
+    }
+    .mobile-menu-drawer.open { display: flex; transform: translateY(0); opacity: 1; }
+    .mobile-menu-drawer a {
+      font-size: 1.15rem; font-weight: 600; color: var(--text-main);
+      text-decoration: none; padding: 0.75rem 0.5rem; border-radius: 10px;
+    }
+    .mobile-menu-drawer a.active { color: var(--primary-blue); background: var(--primary-blue-light); }
+
     .hero {
-      position: relative; height: 100vh; min-height: 600px;
-      display: flex; align-items: center; justify-content: center;
-      text-align: center; background-color: #000;
-      overflow: hidden;
+      position: relative; min-height: 82vh; max-height: 850px;
+      display: flex; align-items: center; justify-content: center; text-align: center;
+      background-color: #031124; overflow: hidden; padding: 6.5rem 1.5rem 4.5rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.12); box-shadow: 0 20px 40px rgba(3, 17, 36, 0.35);
     }
     .hero::before {
       content: ""; position: absolute; inset: 0;
       background: url('storyline-time-limit.jpg') center/cover no-repeat;
-      filter: saturate(40%) brightness(0.8);
-      mask-image: linear-gradient(to top left, black 30%, transparent 70%);
-      -webkit-mask-image: linear-gradient(to top left, black 30%, transparent 70%);
-      z-index: 1;
+      filter: saturate(35%) brightness(0.7);
+      mask-image: linear-gradient(to top left, black 30%, transparent 75%);
+      -webkit-mask-image: linear-gradient(to top left, black 30%, transparent 75%); z-index: 1;
     }
     .hero::after {
       content: ""; position: absolute; inset: 0;
       background: url('6b6f5709-e9af-4224-b2c2-bf3aded32ff0.jpg') center/cover no-repeat;
-      filter: saturate(40%) brightness(0.8);
-      mask-image: linear-gradient(to bottom right, black 30%, transparent 70%);
-      -webkit-mask-image: linear-gradient(to bottom right, black 30%, transparent 70%);
-      z-index: 2;
+      filter: saturate(45%) brightness(0.75);
+      mask-image: linear-gradient(to bottom right, black 30%, transparent 75%);
+      -webkit-mask-image: linear-gradient(to bottom right, black 30%, transparent 75%); z-index: 2;
     }
     .hero-overlay {
       position: absolute; inset: 0;
-      background: linear-gradient(135deg, rgba(2, 62, 138, 0.5) 0%, rgba(0, 0, 0, 0.8) 100%);
-      z-index: 3;
+      background: radial-gradient(circle at center, rgba(2, 62, 138, 0.45) 0%, rgba(3, 17, 36, 0.85) 100%); z-index: 3;
     }
-    .hero-content {
-      position: relative; z-index: 4; padding: 2rem; width: 100%;
-    }
+    .hero-content { position: relative; z-index: 4; max-width: 850px; margin: 0 auto; padding: 1.5rem; }
     .hero h1 {
-      color: var(--white); font-size: clamp(3.5rem, 10vw, 7rem);
-      font-weight: 800; letter-spacing: -0.04em; margin-bottom: 0.2rem;
+      color: var(--white); font-size: clamp(2.6rem, 7.5vw, 5.2rem); font-weight: 800;
+      letter-spacing: -0.04em; line-height: 1.08; margin-bottom: 0.5rem;
+      text-shadow: 0 4px 20px rgba(0, 0, 0, 0.35);
     }
     .hero .subtitle {
-      color: rgba(255, 255, 255, 0.9); font-size: clamp(1.2rem, 3vw, 1.8rem);
-      font-weight: 400; margin-bottom: 0.5rem;
+      color: rgba(255, 255, 255, 0.95); font-size: clamp(1.2rem, 3vw, 1.65rem);
+      font-weight: 400; letter-spacing: -0.01em; margin-bottom: 0.5rem;
     }
-    .hero .motto {
-      color: rgba(255, 255, 255, 0.5); font-size: 0.85rem;
-      text-transform: uppercase; letter-spacing: 2px; font-weight: 600;
+    .hero-motto {
+      color: rgba(255, 255, 255, 0.65); font-size: 0.95rem; font-weight: 500;
+      letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 2.25rem;
     }
-
-    /* =========================================
-       LAYOUT UTILITIES & SECTION BREAK
-       ========================================= */
-    .section { padding: 6rem 2rem; }
-    .container { max-width: 1100px; margin: 0 auto; }
     
+    .hero-feature-dock {
+      display: inline-flex; align-items: center;
+      background: rgba(255, 255, 255, 0.12); backdrop-filter: blur(20px) saturate(180%);
+      -webkit-backdrop-filter: blur(20px) saturate(180%);
+      border: 1px solid rgba(255, 255, 255, 0.22); border-radius: var(--radius-lg);
+      padding: 0.85rem 1.6rem; box-shadow: 0 16px 36px rgba(0, 0, 0, 0.28); max-width: 100%;
+    }
+    .feature-item { display: flex; flex-direction: column; align-items: center; padding: 0 1.25rem; text-align: center; }
+    .feature-label { color: var(--white); font-size: 0.96rem; font-weight: 700; letter-spacing: -0.01em; }
+    .feature-sub { color: rgba(255, 255, 255, 0.8); font-size: 0.78rem; font-weight: 400; margin-top: 2px; }
+    .feature-divider { width: 1px; height: 30px; background: rgba(255, 255, 255, 0.25); }
+
     .section-break-container {
-      width: 100%; display: flex; justify-content: center;
-      margin-top: -25px; margin-bottom: 3rem; position: relative; z-index: 10;
+      position: relative; width: 100%; display: flex; align-items: center; justify-content: center;
+      margin-top: -24px; margin-bottom: 2.5rem; z-index: 10; padding: 0 1.5rem;
     }
-    .section-break-pill {
-      background: rgba(255, 255, 255, 0.8);
-      backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
-      padding: 0.75rem 2rem; border-radius: 50px;
-      box-shadow: var(--shadow-sm); border: 1px solid rgba(255,255,255,0.5);
-      font-size: 0.9rem; font-weight: 600; color: var(--primary-blue);
-      letter-spacing: 1px; text-transform: uppercase;
+    .section-break-line {
+      position: absolute; top: 50%; left: 8%; right: 8%; height: 2px;
+      background: linear-gradient(90deg, transparent 0%, rgba(2, 62, 138, 0.2) 20%, rgba(2, 62, 138, 0.55) 50%, rgba(2, 62, 138, 0.2) 80%, transparent 100%);
+      transform: translateY(-50%); z-index: 1;
+    }
+    .section-break-badge {
+      position: relative; z-index: 2; background: rgba(255, 255, 255, 0.96);
+      backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+      border: 1.5px solid rgba(2, 62, 138, 0.18); border-radius: var(--radius-pill);
+      padding: 0.65rem 1.75rem; box-shadow: var(--shadow-md);
+      display: inline-flex; align-items: center; gap: 0.65rem; color: var(--primary-blue);
+      font-size: 0.85rem; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase;
+    }
+    .section-break-badge .break-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--primary-blue); box-shadow: 0 0 8px rgba(2, 62, 138, 0.6); }
+
+    .container { width: 100%; max-width: 1120px; margin: 0 auto; padding: 0 1.5rem; }
+    .section { padding: 4.5rem 0; }
+    .section-header { text-align: center; margin-bottom: 2.75rem; }
+    .section-header h2 { font-size: clamp(2rem, 4.5vw, 2.8rem); letter-spacing: -0.03em; font-weight: 700; margin-bottom: 0.65rem; color: var(--text-main); }
+    .section-header p { color: var(--text-muted); font-size: clamp(1rem, 2vw, 1.15rem); max-width: 650px; margin: 0 auto; }
+
+    .grid-4 { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.5rem; }
+    .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(290px, 1fr)); gap: 1.75rem; }
+
+    .subject-nav-wrapper {
+      margin-bottom: 2rem;
+      position: relative;
+    }
+    .subject-nav-container {
+      display: flex; gap: 0.75rem; overflow-x: auto; scroll-behavior: smooth;
+      padding: 0.5rem 0.5rem 1.5rem; margin: -0.5rem; scrollbar-width: none;
+      -webkit-overflow-scrolling: touch; border-bottom: 1px solid rgba(0,0,0,0.06);
+    }
+    .subject-nav-container::-webkit-scrollbar { display: none; }
+    
+    .subject-tab {
+      background: transparent; border: none; padding: 0.6rem 1.25rem; font-size: 1rem;
+      font-weight: 600; color: var(--text-muted); cursor: pointer; white-space: nowrap;
+      border-radius: var(--radius-pill); transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    .subject-tab:hover { color: var(--text-main); background: rgba(0,0,0,0.04); }
+    .subject-tab.active {
+      background: var(--text-main); color: var(--white);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      transform: scale(1.05);
     }
 
-    .section-header { text-align: center; margin-bottom: 4rem; }
-    .section-header h2 { font-size: clamp(2rem, 4vw, 2.5rem); letter-spacing: -0.02em; margin-bottom: 1rem; }
-    .section-header p { color: var(--text-muted); font-size: 1.1rem; max-width: 600px; margin: 0 auto; }
-
-    /* =========================================
-       CARDS & BUTTONS
-       ========================================= */
-    .grid-4 {
-      display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.5rem;
+    .sub-category-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem; min-height: 200px;
     }
+    
+    .sub-cat-card {
+      background: var(--white); border-radius: var(--radius-md); padding: 1.75rem;
+      border: 1px solid rgba(0,0,0,0.06); box-shadow: var(--shadow-sm); cursor: pointer;
+      display: flex; flex-direction: column; gap: 0.75rem;
+      transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+      will-change: transform, box-shadow;
+    }
+    .sub-cat-card:hover {
+      box-shadow: var(--shadow-md);
+      transform: translateY(-6px) rotate(1deg);
+      border-color: rgba(2, 62, 138, 0.2);
+    }
+    .sub-cat-title { font-size: 1.25rem; font-weight: 700; color: var(--text-main); letter-spacing: -0.01em; }
+    .sub-cat-preview { font-size: 0.95rem; color: var(--text-muted); display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+    
+    .view-details-btn {
+      margin-top: auto; display: inline-flex; align-items: center; gap: 0.4rem;
+      font-size: 0.9rem; font-weight: 700; color: var(--primary-blue);
+    }
+
+    .bouncy-modal-overlay {
+      position: fixed; inset: 0; background: rgba(0, 0, 0, 0.4);
+      backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+      z-index: 2000; display: flex; align-items: center; justify-content: center;
+      padding: 1.5rem; opacity: 0; pointer-events: none;
+      transition: opacity 0.3s ease;
+      will-change: opacity;
+    }
+    .bouncy-modal-overlay.open { opacity: 1; pointer-events: auto; }
+    
+    .bouncy-modal-content {
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(30px) saturate(200%); -webkit-backdrop-filter: blur(30px) saturate(200%);
+      border-radius: var(--radius-lg); width: 100%; max-width: 600px; padding: 2.5rem;
+      box-shadow: 0 40px 80px rgba(0,0,0,0.2); border: 1px solid rgba(255,255,255,0.4);
+      transform: scale(0.85) translateY(40px) rotate(-2deg);
+      transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+      position: relative; max-height: 90vh; overflow-y: auto;
+      will-change: transform;
+    }
+    .bouncy-modal-overlay.open .bouncy-modal-content {
+      transform: scale(1) translateY(0) rotate(0);
+    }
+
+    .modal-close-btn {
+      position: absolute; top: 1.5rem; right: 1.5rem; width: 36px; height: 36px;
+      border-radius: 50%; background: rgba(0,0,0,0.05); border: none; cursor: pointer;
+      display: flex; align-items: center; justify-content: center; color: var(--text-main);
+      transition: all 0.2s ease;
+    }
+    .modal-close-btn:hover { background: rgba(0,0,0,0.1); transform: scale(1.1); }
+
+    .modal-years {
+      display: inline-block; background: var(--primary-blue-light); color: var(--primary-blue);
+      font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em;
+      padding: 0.3rem 0.75rem; border-radius: var(--radius-pill); margin-bottom: 1rem;
+    }
+    .modal-desc { font-size: 1.05rem; color: var(--text-main); margin-bottom: 1.25rem; line-height: 1.6; }
+    .modal-quote {
+      background: rgba(0,0,0,0.03); border-left: 3px solid var(--primary-blue);
+      padding: 1.25rem; font-style: italic; color: #4a5c75; font-size: 0.95rem; margin-bottom: 1.5rem;
+      border-radius: 0 8px 8px 0;
+    }
+
+    .tutor-assigned { margin-bottom: 1.5rem; }
+    .tutor-assigned-label {
+      display: block; font-size: 0.8rem; font-weight: 700; color: var(--text-muted);
+      text-transform: uppercase; margin-bottom: 0.75rem;
+    }
+    .tutor-chip {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      background: var(--white); border: 1px solid rgba(0,0,0,0.1);
+      padding: 0.25rem 0.85rem 0.25rem 0.25rem; border-radius: var(--radius-pill);
+      font-size: 0.9rem; font-weight: 600; color: var(--text-main);
+      box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+    }
+    .tutor-chip.no-tutor {
+      background: transparent; border: 1.5px dashed rgba(0,0,0,0.2);
+      color: var(--text-muted); padding: 0.5rem 1rem; box-shadow: none; font-weight: 500;
+    }
+    .tutor-avatar {
+      width: 28px; height: 28px; border-radius: 50%;
+      background: var(--primary-blue); color: var(--white);
+      display: flex; align-items: center; justify-content: center; font-size: 0.8rem;
+    }
+    
+    .tutor-chip-interactive {
+      transition: background-color 0.2s, border-color 0.2s, transform 0.2s;
+    }
+    .tutor-chip-interactive:hover {
+      background: var(--primary-blue-light);
+      border-color: rgba(2, 62, 138, 0.4);
+      transform: translateY(-2px);
+    }
+
+    .pdf-link {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      font-size: 0.9rem; font-weight: 700; color: var(--primary-blue); text-decoration: none;
+      background: rgba(2, 62, 138, 0.05); padding: 0.75rem 1.25rem; border-radius: var(--radius-sm);
+      transition: background 0.2s;
+    }
+    .pdf-link:hover { background: rgba(2, 62, 138, 0.1); }
+
     .card {
-      background: var(--white); border-radius: var(--radius-md);
-      padding: 2.5rem 2rem; box-shadow: var(--shadow-sm);
-      transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
-      text-align: center; border: 2px solid transparent;
+      background: var(--white); border-radius: var(--radius-lg); padding: 2.25rem 1.75rem;
+      box-shadow: var(--shadow-sm); border: 1px solid rgba(0, 0, 0, 0.06);
+      transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.28s cubic-bezier(0.16, 1, 0.3, 1);
       display: flex; flex-direction: column; justify-content: space-between;
+      will-change: transform, box-shadow;
     }
     .card:hover { transform: translateY(-5px); box-shadow: var(--shadow-md); }
-    
-    .card h3 { color: var(--text-main); font-size: 1.5rem; margin-bottom: 1rem; }
-    
-    .learn-more-link {
-      display: inline-flex; align-items: center; justify-content: center;
-      gap: 0.3rem; margin-top: 1rem; color: var(--primary-blue);
-      font-weight: 600; text-decoration: none; cursor: pointer; transition: gap 0.2s;
+    .card-discipline { text-align: center; align-items: center; }
+    .discipline-icon {
+      width: 52px; height: 52px; border-radius: var(--radius-md); background: var(--primary-blue-light);
+      color: var(--primary-blue); display: flex; align-items: center; justify-content: center;
+      margin-bottom: 1.25rem; box-shadow: 0 4px 12px rgba(2, 62, 138, 0.15);
     }
-    .learn-more-link:hover { gap: 0.6rem; }
+    .learn-more-link {
+      display: inline-flex; align-items: center; gap: 0.35rem; margin-top: 1.2rem;
+      font-size: 0.92rem; font-weight: 600; color: var(--primary-blue); text-decoration: none;
+      cursor: pointer; transition: gap 0.2s ease, color 0.2s ease;
+    }
+    .learn-more-link:hover { color: var(--primary-blue-hover); gap: 0.55rem; }
+    .card h3 { color: var(--text-main); font-size: 1.35rem; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 0.4rem; }
+    .card p { color: var(--text-muted); font-size: 0.95rem; }
 
     .btn {
       display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem;
-      padding: 1rem 2rem; border-radius: 50px; font-weight: 600;
-      text-decoration: none; transition: all 0.2s ease; cursor: pointer; border: none; font-size: 1rem;
+      padding: 0.85rem 1.75rem; border-radius: var(--radius-pill); font-weight: 600;
+      font-size: 0.95rem; text-decoration: none;
+      transition: transform 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+      cursor: pointer; border: none; min-height: 44px; touch-action: manipulation;
     }
-    .btn-primary { background: var(--primary-blue); color: var(--white); }
-    .btn-primary:hover { background: #012d66; transform: scale(1.02); box-shadow: var(--shadow-sm); }
-    .btn-outline { background: transparent; color: var(--text-main); border: 2px solid var(--text-main); }
-    .btn-outline:hover { background: var(--text-main); color: var(--white); }
+    .btn:active { transform: scale(0.98); }
+    .btn-primary { background: var(--primary-blue); color: var(--white); box-shadow: 0 6px 18px rgba(2, 62, 138, 0.32); }
+    .btn-primary:hover { background: var(--primary-blue-hover); box-shadow: 0 8px 24px rgba(2, 62, 138, 0.45); }
+    .btn-outline { background: transparent; color: var(--text-main); border: 1.5px solid rgba(0, 0, 0, 0.15); }
+    .btn-outline:hover { background: rgba(0, 0, 0, 0.05); border-color: rgba(0, 0, 0, 0.3); }
 
-    /* =========================================
-       PRICING SLIDER
-       ========================================= */
-    .pricing-wrapper { padding: 1rem; margin: -1rem; } /* Prevents shadow clipping */
+    .slider-wrapper { display: flex; align-items: center; gap: 1rem; position: relative; overflow: visible; }
     .slider-container {
-      display: flex; gap: 2rem; overflow-x: auto;
-      scroll-snap-type: x mandatory; scroll-behavior: smooth;
-      padding: 2rem 1rem; scrollbar-width: none;
+      display: flex; gap: 1.75rem; overflow-x: auto; scroll-snap-type: x mandatory;
+      scroll-behavior: smooth; padding: 2.75rem 1.5rem; margin: -1.5rem -1.5rem;
+      scrollbar-width: none; -webkit-overflow-scrolling: touch; width: calc(100% + 3rem);
     }
     .slider-container::-webkit-scrollbar { display: none; }
-    .slide {
-      flex: 0 0 calc(33.333% - 1.5rem); min-width: 280px; scroll-snap-align: center;
+    .slider-container .slide {
+      flex: 0 0 calc(33.333% - 1.25rem); min-width: 270px; scroll-snap-align: center; text-align: center;
+      background: var(--white); border-radius: var(--radius-lg); padding: 2.25rem 1.75rem;
+      box-shadow: var(--shadow-sm); border: 2px solid rgba(0, 0, 0, 0.06);
+      transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.28s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.28s ease;
+      display: flex; flex-direction: column; justify-content: space-between;
+      will-change: transform, box-shadow, border-color;
     }
-    /* Active Pricing Card Hover */
-    .slide.card:hover {
-      border-color: var(--primary-blue);
-      box-shadow: 0 0 0 1px var(--primary-blue), var(--shadow-lg);
+    .slider-container .slide:hover {
+      transform: translateY(-6px); border-color: var(--primary-blue);
+      box-shadow: 0 20px 48px -6px rgba(2, 62, 138, 0.22), 0 12px 24px -4px rgba(0, 0, 0, 0.12);
     }
-    .tier { font-size: 1.1rem; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; }
-    .grades { font-size: 1.6rem; font-weight: 700; margin: 0.5rem 0 1.5rem; color: var(--text-main); }
-    .price { font-size: 3.5rem; font-weight: 800; color: var(--primary-blue); margin-bottom: 2rem; }
-    .price span { font-size: 1.2rem; color: var(--text-muted); font-weight: 500; }
+    .slider-container .slide:hover .btn-outline {
+      background: var(--primary-blue); color: var(--white); border-color: var(--primary-blue); box-shadow: 0 6px 18px rgba(2, 62, 138, 0.35);
+    }
+    .tier { font-size: 1rem; font-weight: 700; color: var(--primary-blue); text-transform: uppercase; letter-spacing: 1.5px; }
+    .grades { font-size: 1.45rem; font-weight: 700; margin: 0.4rem 0 1.25rem; color: var(--text-main); }
+    .price { font-size: 2.85rem; font-weight: 800; color: var(--primary-blue); letter-spacing: -0.03em; margin-bottom: 1.5rem; }
+    .price span { font-size: 1rem; color: var(--text-muted); font-weight: 500; }
+    .slider-btn {
+      background: var(--white); border: 1px solid rgba(0, 0, 0, 0.08); width: 46px; height: 46px;
+      border-radius: 50%; font-size: 1.25rem; cursor: pointer; box-shadow: var(--shadow-sm);
+      display: flex; align-items: center; justify-content: center; transition: background 0.2s, transform 0.2s;
+      color: var(--primary-blue); flex-shrink: 0;
+    }
+    .slider-btn:hover { background: #f0f4f9; transform: scale(1.05); }
 
-    /* =========================================
-       APP TEASER COMPANION BAR
-       ========================================= */
-    .app-teaser {
-      background: var(--white); border-radius: var(--radius-md);
-      padding: 2rem 3rem; display: flex; justify-content: space-between; align-items: center;
-      box-shadow: var(--shadow-sm); margin: 4rem auto; max-width: 900px;
-      flex-wrap: wrap; gap: 1.5rem; text-align: left;
+    .glass {
+      background: rgba(255, 255, 255, 0.8); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+      border: 1px solid var(--border-glass); border-radius: var(--radius-lg); padding: clamp(2.5rem, 5vw, 4rem) 1.5rem;
+      text-align: center; box-shadow: var(--shadow-md);
     }
-    .app-teaser-text h3 { font-size: 1.5rem; margin-bottom: 0.5rem; }
-    .app-teaser-text p { color: var(--text-muted); }
+    .cta-box h2 { font-size: clamp(1.8rem, 4vw, 2.4rem); margin-bottom: 1rem; letter-spacing: -0.02em; }
+    .cta-buttons { display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap; }
+    .section-app-subtle { padding: 0 0 4.5rem; }
+    .app-subtle-card {
+      background: rgba(255, 255, 255, 0.7); backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px);
+      border: 1px solid rgba(2, 62, 138, 0.1); border-radius: var(--radius-lg); padding: 1.5rem 2rem;
+      display: flex; align-items: center; justify-content: space-between; gap: 1.5rem; box-shadow: var(--shadow-sm);
+      transition: box-shadow 0.25s ease, transform 0.25s ease;
+    }
+    .app-subtle-card:hover { box-shadow: var(--shadow-md); transform: translateY(-2px); }
+    .app-info-cluster { display: flex; flex-direction: column; gap: 0.25rem; text-align: left; }
+    .app-badge-tag { font-size: 0.75rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--primary-blue); }
+    .app-title { font-size: 1.1rem; font-weight: 700; color: var(--text-main); letter-spacing: -0.02em; }
+    .app-desc { font-size: 0.9rem; color: var(--text-muted); }
+    .app-subtle-btn { flex-shrink: 0; padding: 0.7rem 1.4rem; font-size: 0.9rem; gap: 0.4rem; }
 
-    /* =========================================
-       CURRICULUM BENTO GRID (SUBJECTS PAGE)
-       ========================================= */
-    .bento-grid {
-      display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 2rem;
-    }
-    .bento-card {
-      background: var(--white); border-radius: var(--radius-md);
-      box-shadow: var(--shadow-md); padding: 2rem; overflow: hidden;
-      display: flex; flex-direction: column;
-    }
-    .bento-header {
-      display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem;
-    }
-    .bento-header-icon {
-      width: 48px; height: 48px; border-radius: 12px;
-      background: var(--primary-blue-light); color: var(--primary-blue);
-      display: flex; align-items: center; justify-content: center;
-    }
-    .bento-header h3 { font-size: 1.5rem; color: var(--text-main); }
-    
-    .bento-accordions { display: flex; flex-direction: column; gap: 0.5rem; }
-    
-    .accordion-item {
-      border: 1px solid rgba(0,0,0,0.05); border-radius: var(--radius-sm);
-      overflow: hidden; transition: all 0.3s ease;
-    }
-    .accordion-header {
-      width: 100%; display: flex; justify-content: space-between; align-items: center;
-      padding: 1rem; background: #fafafa; border: none; cursor: pointer;
-      font-size: 1rem; font-weight: 600; color: var(--text-main); text-align: left;
-    }
-    .accordion-header:hover { background: #f0f0f0; }
-    .accordion-header .chevron { transition: transform 0.3s ease; }
-    
-    /* Smooth CSS Grid Expansion */
-    .accordion-content-wrapper {
-      display: grid; grid-template-rows: 0fr; transition: grid-template-rows 0.4s ease;
-    }
-    .accordion-content { overflow: hidden; }
-    .accordion-inner { padding: 1.5rem; background: var(--white); }
-    
-    /* Active State */
-    .accordion-item.open { border-color: var(--primary-blue); box-shadow: var(--shadow-sm); }
-    .accordion-item.open .accordion-content-wrapper { grid-template-rows: 1fr; }
-    .accordion-item.open .accordion-header { background: var(--white); border-bottom: 1px solid rgba(0,0,0,0.05); color: var(--primary-blue); }
-    .accordion-item.open .chevron { transform: rotate(180deg); color: var(--primary-blue); }
-
-    /* Accordion Internal Styling */
-    .accordion-years { font-size: 0.85rem; font-weight: 700; color: var(--primary-blue); text-transform: uppercase; margin-bottom: 0.5rem; }
-    .accordion-desc { font-size: 0.95rem; line-height: 1.6; color: var(--text-muted); margin-bottom: 1rem; }
-    .accordion-quote {
-      border-left: 3px solid var(--primary-blue); padding-left: 1rem;
-      font-style: italic; color: var(--text-main); font-size: 0.95rem; margin-bottom: 1.5rem;
-    }
-    
-    .tutor-assigned { margin-bottom: 1.5rem; }
-    .tutor-assigned-label { display: block; font-size: 0.8rem; text-transform: uppercase; color: var(--text-muted); margin-bottom: 0.5rem; font-weight: 600; }
-    .tutor-chip {
-      display: inline-flex; align-items: center; gap: 0.5rem;
-      padding: 0.4rem 0.8rem; background: var(--bg-color); border: 1px solid rgba(0,0,0,0.05);
-      border-radius: 50px; font-size: 0.9rem; font-weight: 500;
-    }
-    .tutor-avatar {
-      width: 24px; height: 24px; border-radius: 50%;
-      background: var(--primary-blue); color: var(--white);
-      display: flex; align-items: center; justify-content: center; font-size: 0.7rem;
-    }
-    .tutor-chip-interactive { transition: background-color 0.2s, border-color 0.2s, transform 0.2s; }
-    .tutor-chip-interactive:hover {
-      background: var(--primary-blue-light); border-color: rgba(2, 62, 138, 0.4); transform: translateY(-1px);
-    }
-    .pdf-link {
-      display: inline-flex; align-items: center; gap: 0.5rem;
-      font-size: 0.9rem; font-weight: 600; color: var(--primary-blue);
-      text-decoration: none; padding-top: 1rem; border-top: 1px solid rgba(0,0,0,0.05); width: 100%;
-    }
-    .pdf-link:hover { text-decoration: underline; }
-
-    /* =========================================
-       TUTORS PROFILE
-       ========================================= */
     .profile-section {
-      background: var(--white); border-radius: var(--radius-lg);
-      padding: 4rem; box-shadow: var(--shadow-lg); margin-bottom: 5rem;
+      background: var(--white); border-radius: var(--radius-lg); padding: clamp(2rem, 5vw, 4rem);
+      box-shadow: var(--shadow-lg); margin-bottom: 4rem; border: 1px solid rgba(0, 0, 0, 0.04);
     }
-    .profile-grid { display: grid; grid-template-columns: 1fr 1.5fr; gap: 4rem; align-items: center; }
+    .profile-grid { display: grid; grid-template-columns: 1fr 1.6fr; gap: clamp(2rem, 4vw, 4.5rem); align-items: center; }
     .profile-image-container {
       border-radius: var(--radius-md); overflow: hidden;
-      box-shadow: var(--shadow-lg); background: #f8f8f8;
-      max-width: 400px; margin: 0 auto; position: relative;
+      box-shadow: 0 24px 50px -10px rgba(2, 62, 138, 0.25), 0 16px 32px -6px rgba(0, 0, 0, 0.22);
+      background: #f0f2f5; position: relative; width: 100%; max-width: 360px; margin: 0 auto;
+      aspect-ratio: 1 / 1; display: flex; align-items: center; justify-content: center;
     }
-    .profile-img { width: 100%; height: auto; display: block; object-fit: cover; transition: transform 0.5s ease; }
+    .profile-img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.4s ease; }
     .profile-image-container:hover .profile-img { transform: scale(1.03); }
-    
-    .profile-header h2 { font-size: 3rem; letter-spacing: -0.03em; margin-bottom: 0.25rem; }
-    .profile-title { font-size: 1.25rem; font-weight: 600; color: var(--primary-blue); text-transform: uppercase; letter-spacing: 2px; display: block; margin-bottom: 2rem; }
-    .profile-divider { border: none; height: 1px; background: rgba(0, 0, 0, 0.08); margin: 1.5rem 0; }
-    .profile-detail-group h3 { font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px; color: var(--text-muted); margin-bottom: 0.5rem; }
-    .profile-detail-group p { font-size: 1.15rem; line-height: 1.7; color: var(--text-main); }
-    
-    /* =========================================
-       SUPPORT PAGE
-       ========================================= */
-    .support-hero { text-align: center; margin-bottom: 4rem; }
-    .support-card {
-      background: var(--white); border-radius: var(--radius-lg); padding: 4rem;
-      box-shadow: var(--shadow-md); text-align: center; margin-bottom: 2rem;
+    .profile-header h2 { font-size: clamp(2rem, 4vw, 3rem); letter-spacing: -0.03em; margin-bottom: 0.25rem; color: var(--text-main); }
+    .profile-title { font-size: 1.05rem; font-weight: 700; color: var(--primary-blue); text-transform: uppercase; letter-spacing: 2px; display: block; margin-bottom: 1.5rem; }
+    .profile-divider { border: none; height: 1px; background: rgba(0, 0, 0, 0.07); margin: 1.25rem 0; }
+    .profile-detail-group h3 { font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px; color: var(--text-muted); margin-bottom: 0.35rem; font-weight: 600; }
+    .profile-detail-group p { font-size: 1.05rem; line-height: 1.65; color: var(--text-main); }
+    .profile-contact-link {
+      display: inline-flex; align-items: center; gap: 0.4rem; font-size: 1.05rem;
+      font-weight: 600; color: var(--primary-blue); text-decoration: none; transition: color 0.2s;
     }
-    .support-card h2 { font-size: 2.5rem; margin-bottom: 1rem; }
-    .support-card p { font-size: 1.1rem; color: var(--text-muted); max-width: 600px; margin: 0 auto 2rem; line-height: 1.6; }
-    
-    /* =========================================
-       CONTACT FORM
-       ========================================= */
-    .form-container {
-      background: var(--white); padding: 3rem; border-radius: var(--radius-lg);
-      box-shadow: var(--shadow-md); max-width: 600px; margin: 0 auto;
+    .profile-contact-link:hover { color: var(--primary-blue-hover); text-decoration: underline; }
+
+    .contact-card {
+      background: var(--white); border-radius: var(--radius-lg); padding: clamp(2rem, 5vw, 3.5rem);
+      box-shadow: var(--shadow-md); max-width: 720px; margin: 0 auto 4rem; border: 1px solid rgba(0, 0, 0, 0.05);
     }
-    .form-group { margin-bottom: 1.5rem; text-align: left; }
-    .form-group label { display: block; font-weight: 600; margin-bottom: 0.5rem; font-size: 0.95rem; }
-    .form-control {
-      width: 100%; padding: 1rem; border: 1px solid rgba(0,0,0,0.1);
-      border-radius: var(--radius-sm); font-size: 1rem; font-family: inherit;
-      background: var(--bg-color); transition: border-color 0.2s, box-shadow 0.2s;
+    .form-group { margin-bottom: 1.4rem; text-align: left; }
+    .form-group label { display: block; font-size: 0.9rem; font-weight: 600; color: var(--text-main); margin-bottom: 0.5rem; }
+    .form-input, .form-select, .form-textarea {
+      width: 100%; padding: 0.85rem 1.1rem; border: 1.5px solid rgba(0, 0, 0, 0.12);
+      border-radius: var(--radius-sm); font-family: inherit; font-size: 1rem; background: #fafafc;
+      color: var(--text-main); outline: none; transition: border-color 0.2s, background-color 0.2s;
     }
-    .form-control:focus { outline: none; border-color: var(--primary-blue); box-shadow: 0 0 0 3px var(--primary-blue-light); }
-    
-    #success-message {
-      display: none; background: #e6f7eb; border: 1px solid #34c759;
-      padding: 2rem; border-radius: var(--radius-sm); text-align: center; margin-top: 1.5rem;
+    .form-input:focus, .form-select:focus, .form-textarea:focus { border-color: var(--primary-blue); background: var(--white); }
+    .booking-destination-hint {
+      background: #f0f4f9; border-radius: var(--radius-sm); padding: 0.85rem 1rem; font-size: 0.85rem;
+      color: #3b506d; margin-bottom: 1.5rem; display: flex; align-items: flex-start; gap: 0.6rem; line-height: 1.45;
+    }
+    .status-box { display: none; margin-top: 1.5rem; padding: 1.25rem 1.5rem; border-radius: var(--radius-md); text-align: center; line-height: 1.5; }
+    .status-box.success { background: #e8f5e9; color: #1b5e20; border: 1px solid #c8e6c9; }
+    .status-box.error { background: #ffebee; color: #c62828; border: 1px solid #ffcdd2; }
+
+    .fade-on-scroll {
+      opacity: 0; transform: translateY(32px);
+      transition: opacity 0.85s cubic-bezier(0.16, 1, 0.3, 1), transform 0.85s cubic-bezier(0.16, 1, 0.3, 1);
+      will-change: opacity, transform;
+    }
+    .fade-on-scroll.is-visible { opacity: 1; transform: translateY(0); }
+    .delay-1 { transition-delay: 0.12s; }
+    .delay-2 { transition-delay: 0.22s; }
+    .delay-3 { transition-delay: 0.32s; }
+    .delay-4 { transition-delay: 0.42s; }
+
+    footer {
+      text-align: center; padding: 3rem 1.5rem; color: var(--text-muted); font-size: 0.9rem;
+      border-top: 1px solid rgba(0, 0, 0, 0.05); background: var(--white);
     }
 
-    /* =========================================
-       ANIMATIONS & RESPONSIVE
-       ========================================= */
-    .fade-on-scroll { opacity: 0; transform: translateY(30px); transition: opacity 0.8s ease, transform 0.8s ease; }
-    .fade-on-scroll.is-visible { opacity: 1; transform: translateY(0); }
-    .delay-1 { transition-delay: 0.1s; } .delay-2 { transition-delay: 0.2s; }
+    @media (max-width: 992px) {
+      .profile-grid { grid-template-columns: 1fr; gap: 2.5rem; text-align: left; }
+      .profile-image-container { max-width: 300px; }
+      .slider-container .slide { flex: 0 0 calc(50% - 0.75rem); }
+      .curriculum-bento-grid { grid-template-columns: 1fr; }
+    }
 
     @media (max-width: 768px) {
       .nav-links { display: none; }
-      .hamburger { display: flex; }
-      .section { padding: 4rem 1.5rem; }
-      .app-teaser { flex-direction: column; text-align: center; padding: 2rem; }
-      .profile-grid { grid-template-columns: 1fr; gap: 2rem; }
-      .profile-section, .support-card, .form-container { padding: 2rem; }
+      .nav-hamburger { display: flex; }
+      .hero { min-height: 75vh; padding-top: 5rem; }
+      .hero-feature-dock { flex-direction: column; gap: 0.85rem; padding: 1.1rem 1.25rem; width: 100%; }
+      .feature-divider { width: 80%; height: 1px; }
+      .slider-container .slide { flex: 0 0 88%; }
+      .slider-btn { display: none; }
+      .cta-buttons { flex-direction: column; }
+      .btn { width: 100%; }
+      .app-subtle-card { flex-direction: column; align-items: flex-start; padding: 1.5rem; }
+      .app-subtle-btn { width: 100%; }
+    }
+
+    @media (max-width: 480px) {
+      .nav-container { padding: 0.75rem 1rem; }
+      .card { padding: 1.75rem 1.25rem; }
+      .profile-section { padding: 1.5rem; }
+      .price { font-size: 2.4rem; }
     }
   </style>
 </head>
 <body>
 
-  <!-- NAVIGATION -->
-  <header class="navbar" id="navbar">
+  <header class="navbar">
     <div class="nav-container">
       <div class="brand" onclick="navigateTo('home')">
+        <div class="brand-icon">TT</div>
         <span class="brand-text">Teen<span class="highlight">Tutors</span></span>
       </div>
-      
-      <!-- Desktop Links -->
+
       <ul class="nav-links">
-        <li><a onclick="navigateTo('home')" id="nav-home" class="active">Home</a></li>
-        <li><a onclick="navigateTo('subjects')" id="nav-subjects">Subjects & Rates</a></li>
-        <li><a onclick="navigateTo('tutors')" id="nav-tutors">Tutors</a></li>
-        <li><a onclick="navigateTo('support')" id="nav-support">Support</a></li>
-        <li><a onclick="navigateTo('contact')" class="btn btn-primary" style="color: white; padding: 0.5rem 1.2rem;">Book</a></li>
+        <li><a onclick="navigateTo('home')" class="nav-link active" data-target="home">Home</a></li>
+        <li><a onclick="navigateTo('subjects')" class="nav-link" data-target="subjects">Subjects & Rates</a></li>
+        <li><a onclick="navigateTo('tutors')" class="nav-link" data-target="tutors">Tutors</a></li>
+        <li><a onclick="navigateTo('contact')" class="nav-link" data-target="contact">Contact/Booking</a></li>
+        <li><a onclick="navigateTo('support')" class="nav-link" data-target="support">Support</a></li>
       </ul>
 
-      <!-- Mobile Hamburger -->
-      <button class="hamburger" id="hamburgerBtn" onclick="toggleMobileMenu()">
+      <button class="nav-hamburger" id="hamburgerBtn" aria-label="Toggle navigation menu" onclick="toggleMobileMenu()">
         <span></span><span></span><span></span>
       </button>
     </div>
+
+    <nav class="mobile-menu-drawer" id="mobileDrawer">
+      <a onclick="navigateMobile('home')" class="mobile-nav-link active" data-target="home">Home</a>
+      <a onclick="navigateMobile('subjects')" class="mobile-nav-link" data-target="subjects">Subjects & Rates</a>
+      <a onclick="navigateMobile('tutors')" class="mobile-nav-link" data-target="tutors">Tutors & Leadership</a>
+      <a onclick="navigateMobile('contact')" class="mobile-nav-link" data-target="contact">Contact & Booking</a>
+      <a onclick="navigateMobile('support')" class="mobile-nav-link" data-target="support">Support</a>
+    </nav>
   </header>
 
-  <!-- Mobile Drawer -->
-  <div class="mobile-drawer" id="mobileDrawer">
-    <a onclick="navigateTo('home'); toggleMobileMenu();">Home</a>
-    <a onclick="navigateTo('subjects'); toggleMobileMenu();">Subjects & Rates</a>
-    <a onclick="navigateTo('tutors'); toggleMobileMenu();">Tutors</a>
-    <a onclick="navigateTo('support'); toggleMobileMenu();">Support</a>
-    <a onclick="navigateTo('contact'); toggleMobileMenu();" class="btn btn-primary" style="margin-top: 1rem;">Book Session</a>
-  </div>
+  <main id="app-container">
 
-  <main>
-    <!-- =========================================
-         HOME VIEW
-         ========================================= -->
-    <section id="view-home" class="view-section active">
-      <div class="hero">
+    <div id="view-home" class="view active">
+      <section class="hero">
         <div class="hero-overlay"></div>
         <div class="hero-content fade-on-scroll">
           <h1>Teen Tutors</h1>
-          <p class="subtitle">Geelong and Surf Coast Region</p>
-          <p class="motto">By students, for students</p>
-        </div>
-      </div>
-
-      <div class="section-break-container">
-        <div class="section-break-pill">Tutoring Programs & Curriculum</div>
-      </div>
-
-      <!-- Disciplines -->
-      <div class="section container">
-        <div class="grid-4">
-          <div class="card fade-on-scroll">
-            <h3>Mathematics</h3>
-            <a onclick="navigateTo('subjects')" class="learn-more-link">Learn more &rarr;</a>
-          </div>
-          <div class="card fade-on-scroll delay-1">
-            <h3>English</h3>
-            <a onclick="navigateTo('subjects')" class="learn-more-link">Learn more &rarr;</a>
-          </div>
-          <div class="card fade-on-scroll delay-2">
-            <h3>Science</h3>
-            <a onclick="navigateTo('subjects')" class="learn-more-link">Learn more &rarr;</a>
-          </div>
-          <div class="card fade-on-scroll delay-3">
-            <h3>Humanities</h3>
-            <a onclick="navigateTo('subjects')" class="learn-more-link">Learn more &rarr;</a>
-          </div>
-        </div>
-      </div>
-
-      <!-- App Teaser -->
-      <div class="container fade-on-scroll">
-        <div class="app-teaser">
-          <div class="app-teaser-text">
-            <h3>Student Portal & Tracking</h3>
-            <p>Access your curriculum, track progress, and manage sessions through our PWA.</p>
-          </div>
-          <a onclick="navigateTo('support')" class="btn btn-outline">Get App &rarr;</a>
-        </div>
-      </div>
-    </section>
-
-    <!-- =========================================
-         SUBJECTS & RATES VIEW
-         ========================================= -->
-    <section id="view-subjects" class="view-section section">
-      <div class="container" style="padding-top: 60px;">
-        
-        <!-- Pricing Slider -->
-        <div class="section-header fade-on-scroll">
-          <h2>Hourly Rates</h2>
-        </div>
-        <div class="pricing-wrapper fade-on-scroll delay-1" style="margin-bottom: 5rem;">
-          <div class="slider-container">
-            <div class="slide card">
-              <div class="tier">Juniors</div>
-              <div class="grades">Prep - Year 3</div>
-              <div class="price">$27<span>/hr</span></div>
-              <a onclick="navigateTo('contact')" class="btn btn-outline" style="width: 100%;">Book Session</a>
-            </div>
-            <div class="slide card">
-              <div class="tier">Pre-Teen</div>
-              <div class="grades">Year 4 - 6</div>
-              <div class="price">$29<span>/hr</span></div>
-              <a onclick="navigateTo('contact')" class="btn btn-outline" style="width: 100%;">Book Session</a>
-            </div>
-            <div class="slide card">
-              <div class="tier">Teens</div>
-              <div class="grades">Year 7 - 9</div>
-              <div class="price">$31<span>/hr</span></div>
-              <a onclick="navigateTo('contact')" class="btn btn-outline" style="width: 100%;">Book Session</a>
-            </div>
-          </div>
-        </div>
-
-        <!-- Curriculum Bento Grid -->
-        <div class="section-header fade-on-scroll">
-          <h2>Victorian Curriculum Framework</h2>
-          <p>Explore the 8 core F-10 learning areas and see how our tutors align with official learning scopes.</p>
-        </div>
-        
-        <div id="curriculum-container" class="bento-grid fade-on-scroll delay-1">
-          <!-- Populated by JavaScript -->
-        </div>
-
-      </div>
-    </section>
-
-    <!-- =========================================
-         TUTORS VIEW
-         ========================================= -->
-    <section id="view-tutors" class="view-section section">
-      <div class="container" style="padding-top: 60px;">
-        <div class="section-header fade-on-scroll" style="text-align: left; margin-bottom: 2rem;">
-          <h1 style="font-size: clamp(2.3rem, 5vw, 3.4rem); letter-spacing: -0.03em;">Leadership & Team</h1>
-          <p style="margin: 0;">Meet the dedicated students driving academic excellence.</p>
-        </div>
-
-        <!-- Flynn Pretlove -->
-        <div id="tutor-flynn-pretlove" class="profile-section fade-on-scroll delay-1">
-          <div class="profile-grid">
-            <div class="profile-image-container">
-              <img src="FP!!!@@@.png" alt="Flynn Pretlove" class="profile-img" onerror="this.src='data:image/svg+xml;charset=UTF-8,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'400\' height=\'400\' background=\'%23f0f0f0\'%3E%3Crect width=\'100%25\' height=\'100%25\' fill=\'%23e0e0e0\'/%3E%3Ctext x=\'50%25\' y=\'50%25\' dominant-baseline=\'middle\' text-anchor=\'middle\' font-family=\'sans-serif\' font-size=\'20\' fill=\'%23888\'%3EPortrait Placeholder%3C/text%3E%3C/svg%3E'" />
-            </div>
-            <div class="profile-content">
-              <div class="profile-header">
-                <h2>Flynn Pretlove</h2>
-                <span class="profile-title">CEO & Founder</span>
-              </div>
-              <hr class="profile-divider" />
-              <div class="profile-detail-group">
-                <h3>Education</h3>
-                <p>Iona College Geelong (Year 10)</p>
-              </div>
-              <hr class="profile-divider" />
-              <div class="profile-detail-group">
-                <h3>Subject Expertise</h3>
-                <p>Mathematics & Humanities</p>
-              </div>
-              <hr class="profile-divider" />
-              <div class="profile-detail-group">
-                <h3>About</h3>
-                <p>As a passionate and dedicated student, my primary goal is to empower others to achieve their full academic potential. Growing up in a busy household with three brothers, in which two are younger than me, I have developed strong communication and mentorship skills that I wish to further develop.</p>
-                <p style="margin-top: 1rem;">Outside of academics, I am an avid basketball player and a passionate follower of the AFL. I have a particular passion for Mathematics, consistently achieving high academic standards and frequently earning Credit and Distinction awards in mathematical competitions.</p>
-              </div>
-              <hr class="profile-divider" />
-              <div class="profile-detail-group">
-                <h3>Contact</h3>
-                <a href="mailto:placeholder@email.com" class="learn-more-link">Email Flynn &rarr;</a>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- =========================================
-         SUPPORT VIEW
-         ========================================= -->
-    <section id="view-support" class="view-section section">
-      <div class="container" style="padding-top: 60px;">
-        <div class="support-hero fade-on-scroll">
-          <h1 style="font-size: 3rem; margin-bottom: 1rem;">Student Hub & Support</h1>
-          <p style="color: var(--text-muted); font-size: 1.1rem;">Access your tools, install the companion app, or request curriculum adjustments.</p>
-        </div>
-
-        <div class="support-card fade-on-scroll delay-1">
-          <h2>School Tracker App</h2>
-          <p>Our custom Progressive Web App lets you view session notes, track upcoming assignments, and monitor academic progress directly from your phone's home screen.</p>
-          <a href="https://ellsull10-sys.github.io/School-tracker/index.html" target="_blank" rel="noopener noreferrer" class="btn btn-primary" style="margin-bottom: 2rem;">Launch Web App ↗</a>
+          <p class="subtitle">Geelong & Surf Coast Region</p>
+          <p class="hero-motto">By students, for students</p>
           
-          <hr class="profile-divider" style="margin: 2rem 0;" />
+          <div class="hero-feature-dock">
+            <div class="feature-item">
+              <span class="feature-label">Prep to Year 9</span>
+              <span class="feature-sub">Foundational to Secondary</span>
+            </div>
+            <div class="feature-divider"></div>
+            <div class="feature-item">
+              <span class="feature-label">Peer Mentorship</span>
+              <span class="feature-sub">Relatable & Inspiring</span>
+            </div>
+            <div class="feature-divider"></div>
+            <div class="feature-item">
+              <span class="feature-label">Flexible Delivery</span>
+              <span class="feature-sub">In-Person & Online</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <div class="section-break-container fade-on-scroll">
+        <div class="section-break-line"></div>
+        <div class="section-break-badge">
+          <span class="break-dot"></span>
+          <span>Tutoring Programs & Curriculum</span>
+        </div>
+      </div>
+
+      <section class="section disciplines">
+        <div class="container">
+          <div class="section-header fade-on-scroll">
+            <h2>Private Or Group Tutoring</h2>
+            <p>Targeted for years Prep to 9 across core academic disciplines.</p>
+          </div>
+          <div class="grid-4">
+            <div class="card card-discipline fade-on-scroll delay-1">
+              <div class="discipline-icon">
+                <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
+              </div>
+              <h3>Mathematics</h3>
+              <p>Mental arithmetic, foundational concepts, and problem solving.</p>
+              <a onclick="navigateTo('subjects')" class="learn-more-link">Learn more &rarr;</a>
+            </div>
+            
+            <div class="card card-discipline fade-on-scroll delay-2">
+              <div class="discipline-icon">
+                <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
+              </div>
+              <h3>English</h3>
+              <p>Phonics, reading fluency, grammar, and essay writing skills.</p>
+              <a onclick="navigateTo('subjects')" class="learn-more-link">Learn more &rarr;</a>
+            </div>
+
+            <div class="card card-discipline fade-on-scroll delay-3">
+              <div class="discipline-icon">
+                <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 2v7.31"></path><path d="M14 9.3V2"></path><path d="M8.5 2h7"></path><path d="M14 9.3a6.5 6.5 0 1 1-4 0"></path><path d="M5.52 16h12.96"></path></svg>
+              </div>
+              <h3>Science</h3>
+              <p>Earth science, biology basics, and scientific investigation.</p>
+              <a onclick="navigateTo('subjects')" class="learn-more-link">Learn more &rarr;</a>
+            </div>
+
+            <div class="card card-discipline fade-on-scroll delay-4">
+              <div class="discipline-icon">
+                <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>
+              </div>
+              <h3>Humanities</h3>
+              <p>History, geography, critical inquiry, and analysis.</p>
+              <a onclick="navigateTo('subjects')" class="learn-more-link">Learn more &rarr;</a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section pricing">
+        <div class="container">
+          <div class="section-header fade-on-scroll">
+            <h2>Hourly Rates</h2>
+          </div>
           
-          <div style="text-align: left; display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem;">
-            <div>
-              <h3 style="font-size: 1.1rem; margin-bottom: 0.5rem;">iOS Installation</h3>
-              <p style="font-size: 0.95rem; color: var(--text-muted);">1. Open the app link in Safari.<br>2. Tap the Share icon (box with up arrow).<br>3. Scroll down and tap <strong>"Add to Home Screen"</strong>.</p>
+          <div class="slider-wrapper fade-on-scroll">
+            <button class="slider-btn" id="slideLeft" aria-label="Slide previous">&larr;</button>
+            
+            <div class="slider-container" id="pricingSlider">
+              <div class="slide">
+                <div>
+                  <div class="tier">Juniors</div>
+                  <div class="grades">Prep - Year 3</div>
+                </div>
+                <div>
+                  <div class="price">$27<span>/hr</span></div>
+                  <button onclick="prefillAndBook('prep-2')" class="btn btn-outline" style="width: 100%;">Book Session</button>
+                </div>
+              </div>
+              
+              <div class="slide">
+                <div>
+                  <div class="tier">Pre-Teen</div>
+                  <div class="grades">Year 4 - 6</div>
+                </div>
+                <div>
+                  <div class="price">$29<span>/hr</span></div>
+                  <button onclick="prefillAndBook('year-5-6')" class="btn btn-outline" style="width: 100%;">Book Session</button>
+                </div>
+              </div>
+              
+              <div class="slide">
+                <div>
+                  <div class="tier">Teens</div>
+                  <div class="grades">Year 7 - 9</div>
+                </div>
+                <div>
+                  <div class="price">$31<span>/hr</span></div>
+                  <button onclick="prefillAndBook('year-7-8')" class="btn btn-outline" style="width: 100%;">Book Session</button>
+                </div>
+              </div>
             </div>
-            <div>
-              <h3 style="font-size: 1.1rem; margin-bottom: 0.5rem;">Android Installation</h3>
-              <p style="font-size: 0.95rem; color: var(--text-muted);">1. Open the app link in Chrome.<br>2. Tap the menu (three dots).<br>3. Tap <strong>"Install app"</strong> or "Add to Home screen".</p>
+
+            <button class="slider-btn" id="slideRight" aria-label="Slide next">&rarr;</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="section how-it-works fade-on-scroll">
+        <div class="container">
+          <div class="cta-box glass">
+            <h2>Looking for academic support?</h2>
+            <p style="color: var(--text-muted); max-width: 550px; margin: 0 auto 2rem; font-size: 1.05rem;">We connect high-achieving high school tutors with students to build genuine comprehension and confidence.</p>
+            <div class="cta-buttons">
+              <a href="tel:0400000000" class="btn btn-outline">Call Us</a>
+              <a onclick="navigateTo('contact')" class="btn btn-outline">Contact Us</a>
+              <a onclick="navigateTo('contact')" class="btn btn-primary">Book a Session</a>
             </div>
           </div>
         </div>
-      </div>
-    </section>
+      </section>
 
-    <!-- =========================================
-         CONTACT / BOOKING VIEW
-         ========================================= -->
-    <section id="view-contact" class="view-section section">
-      <div class="container" style="padding-top: 60px;">
-        <div class="section-header fade-on-scroll">
-          <h2>Book a Session</h2>
-          <p>Fill out the details below. This will generate an email directly to our intake team.</p>
-        </div>
-
-        <div class="form-container fade-on-scroll delay-1">
-          <form id="bookingForm" onsubmit="handleFormSubmit(event)">
-            <div class="form-group">
-              <label for="parentName">Parent/Guardian Name</label>
-              <input type="text" id="parentName" class="form-control" required>
+      <section class="section-app-subtle fade-on-scroll">
+        <div class="container">
+          <div class="app-subtle-card">
+            <div class="app-info-cluster">
+              <div class="app-badge-tag">Student Companion</div>
+              <div class="app-title">School Tracker App</div>
+              <p class="app-desc">Organize assignments, log study sessions, and track learning goals on any device.</p>
             </div>
-            <div class="form-group">
-              <label for="studentYear">Student Year Level</label>
-              <select id="studentYear" class="form-control" required>
-                <option value="">Select a year...</option>
-                <option value="Prep-3">Junior (Prep - Year 3)</option>
-                <option value="4-6">Pre-Teen (Year 4 - 6)</option>
-                <option value="7-9">Teen (Year 7 - 9)</option>
-              </select>
-            </div>
-            <div class="form-group">
-              <label for="subjectInterest">Subject of Interest</label>
-              <input type="text" id="subjectInterest" class="form-control" placeholder="e.g., Year 8 Mathematics" required>
-            </div>
-            <div class="form-group">
-              <label for="notes">Additional Notes / Goals</label>
-              <textarea id="notes" class="form-control" rows="4" placeholder="What is the student aiming to achieve?"></textarea>
-            </div>
-            <button type="submit" class="btn btn-primary" style="width: 100%;">Generate Booking Email</button>
-          </form>
-
-          <div id="success-message">
-            <h3 style="color: #155724; margin-bottom: 0.5rem;">Ready to send!</h3>
-            <p style="color: #155724; margin-bottom: 1.5rem; font-size: 0.95rem;">Click the button below to open your email app and send the details to Flynn.</p>
-            <a id="emailDraftBtn" href="#" class="btn btn-primary">Send Email Now &rarr;</a>
-            <button onclick="resetForm()" class="btn btn-outline" style="margin-top: 1rem; border: none;">Start Over</button>
+            <button onclick="navigateTo('support')" class="btn btn-primary app-subtle-btn">
+              <span>Get App</span>
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+            </button>
           </div>
         </div>
-      </div>
-    </section>
+      </section>
+    </div>
+
+    <div id="view-subjects" class="view" style="padding-top: 90px;">
+      <section class="section">
+        <div class="container">
+          <div class="section-header fade-on-scroll">
+            <h1 style="font-size: clamp(2.3rem, 5vw, 3.4rem); letter-spacing: -0.03em; margin-bottom: 0.5rem;">Curriculum & Rates</h1>
+            <p>Explore our targeted tutoring areas based on the 8 core concepts of the Victorian Curriculum (F-10).</p>
+          </div>
+
+          <div class="subject-nav-wrapper fade-on-scroll delay-1">
+            <div class="subject-nav-container" id="subject-nav">
+              <!-- Rendered by JS -->
+            </div>
+          </div>
+          
+          <div id="sub-category-container" class="sub-category-grid fade-on-scroll delay-2">
+             <!-- Rendered by JS -->
+          </div>
+
+          <div class="section-break-container fade-on-scroll delay-3" style="margin: 4rem 0;">
+            <div class="section-break-line"></div>
+            <div class="section-break-badge">
+              <span class="break-dot"></span>
+              <span>Tutoring Rates & Packages</span>
+            </div>
+          </div>
+
+          <div class="grid-3">
+            <div class="card fade-on-scroll delay-1">
+              <div>
+                <span class="tier">Years Prep - 4</span>
+                <h3 style="margin-top: 0.35rem;">Primary Foundations</h3>
+                <p style="margin: 0.75rem 0 1.5rem;">Focusing on core literacy, numeracy, and establishing early study confidence.</p>
+              </div>
+              <div>
+                <div class="price">$27 - $29 <span>/ hr</span></div>
+                <button onclick="prefillAndBook('prep-2')" class="btn btn-outline" style="width: 100%;">Inquire for Primary</button>
+              </div>
+            </div>
+
+            <div class="card fade-on-scroll delay-2" style="border: 2px solid var(--primary-blue);">
+              <div>
+                <span class="tier">Years 5 - 7</span>
+                <h3 style="margin-top: 0.35rem;">Middle School Transition</h3>
+                <p style="margin: 0.75rem 0 1.5rem;">Bridging the gap into secondary learning, tackling pre-algebra and structured writing.</p>
+              </div>
+              <div>
+                <div class="price">$29 - $31 <span>/ hr</span></div>
+                <button onclick="prefillAndBook('year-5-6')" class="btn btn-primary" style="width: 100%;">Inquire for Middle School</button>
+              </div>
+            </div>
+
+            <div class="card fade-on-scroll delay-3">
+              <div>
+                <span class="tier">Years 8 - 9</span>
+                <h3 style="margin-top: 0.35rem;">Secondary Mastery</h3>
+                <p style="margin: 0.75rem 0 1.5rem;">Targeted support in specific curriculum branches, test preparation, and essay structure.</p>
+              </div>
+              <div>
+                <div class="price">$31 <span>/ hr</span></div>
+                <button onclick="prefillAndBook('year-7-8')" class="btn btn-outline" style="width: 100%;">Inquire for Year 8&ndash;9</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <div id="view-tutors" class="view" style="padding-top: 90px;">
+      <section class="section">
+        <div class="container">
+          <div class="section-header fade-on-scroll" style="text-align: left; margin-bottom: 2rem;">
+            <h1 style="font-size: clamp(2.3rem, 5vw, 3.4rem); letter-spacing: -0.03em;">Leadership & Team</h1>
+            <p style="margin: 0;">Meet the high-achieving student leaders empowering our Geelong learners.</p>
+          </div>
+
+          <div id="tutor-flynn-pretlove" class="profile-section fade-on-scroll delay-1">
+            <div class="profile-grid">
+              
+              <div class="profile-image-container">
+                <img 
+                  src="FP!!!@@@.png" 
+                  alt="Flynn Pretlove" 
+                  class="profile-img"
+                  loading="lazy"
+                  decoding="async"
+                  onerror="this.onerror=null; this.src='FP!!!@@@.jpg';" 
+                />
+              </div>
+
+              <div class="profile-content">
+                <div class="profile-header">
+                  <h2>Flynn Pretlove</h2>
+                  <span class="profile-title">CEO & Founder</span>
+                </div>
+
+                <hr class="profile-divider" />
+
+                <div class="profile-detail-group">
+                  <h3>Education</h3>
+                  <p>Iona College Geelong (Year 10)</p>
+                </div>
+
+                <hr class="profile-divider" />
+
+                <div class="profile-detail-group">
+                  <h3>Subject Expertise</h3>
+                  <p>Mathematics & Humanities</p>
+                </div>
+
+                <hr class="profile-divider" />
+
+                <div class="profile-detail-group">
+                  <h3>About</h3>
+                  <p>
+                    As a passionate and dedicated student, my primary goal is to empower others to achieve their full academic potential. Growing up in a busy household with three brothers, in which two are younger than me, I have developed strong communication, patience, and mentorship skills that I actively bring into tutoring sessions.
+                  </p>
+                  <p style="margin-top: 0.85rem;">
+                    Outside of academics, I am an avid basketball player and a passionate follower of the AFL. I have a particular passion for Mathematics, consistently achieving high academic standards and frequently earning Credit and Distinction awards in mathematical competitions.
+                  </p>
+                </div>
+
+                <hr class="profile-divider" />
+
+                <div class="profile-detail-group">
+                  <h3>Direct Contact</h3>
+                  <a href="mailto:placeholder@email.com" class="profile-contact-link">
+                    <span>Email Flynn Pretlove</span>
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+                  </a>
+                </div>
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <div id="view-contact" class="view" style="padding-top: 90px;">
+      <section class="section">
+        <div class="container">
+          <div class="section-header fade-on-scroll">
+            <h1 style="font-size: clamp(2.3rem, 5vw, 3.4rem); letter-spacing: -0.03em;">Contact & Book a Session</h1>
+            <p>Tell us about your student's learning goals. We will match you with the right tutor in the Geelong and Surf Coast region.</p>
+          </div>
+
+          <div class="contact-card fade-on-scroll delay-1">
+            <div class="booking-destination-hint">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink: 0; margin-top: 2px;"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+              <span><strong>How inquiries work:</strong> Submissions are sent straight to our team. If you haven't plugged in your direct Formspree or Web3Forms email token, it will automatically offer a pre-filled direct email backup!</span>
+            </div>
+
+            <form id="contactForm" onsubmit="handleFormSubmit(event)">
+              <div class="form-group">
+                <label for="parentName">Parent or Guardian Name</label>
+                <input type="text" id="parentName" name="parentName" class="form-input" placeholder="e.g. Sarah Jenkins" required />
+              </div>
+
+              <div class="form-group">
+                <label for="contactEmail">Email Address</label>
+                <input type="email" id="contactEmail" name="contactEmail" class="form-input" placeholder="e.g. sarah@example.com" required />
+              </div>
+
+              <div class="form-group">
+                <label for="studentYear">Student Year Level</label>
+                <select id="studentYear" name="studentYear" class="form-select" required>
+                  <option value="" disabled selected>Select Year Level</option>
+                  <option value="prep-2">Prep &ndash; Year 2 ($27/hr)</option>
+                  <option value="year-3-4">Year 3 &ndash; 4 ($27&ndash;$29/hr)</option>
+                  <option value="year-5-6">Year 5 &ndash; 6 ($29/hr)</option>
+                  <option value="year-7-8">Year 7 &ndash; 8 ($31/hr)</option>
+                  <option value="year-9">Year 9 ($31/hr)</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="subjectSelect">Primary Subject Focus</label>
+                <select id="subjectSelect" name="subjectSelect" class="form-select" required>
+                  <option value="" disabled selected>Choose Focus Subject</option>
+                  <option value="maths">Mathematics</option>
+                  <option value="english">English & Writing</option>
+                  <option value="science">Science</option>
+                  <option value="humanities">Humanities</option>
+                  <option value="general">Comprehensive General Support</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="notes">Student Goals or Specific Areas for Improvement</label>
+                <textarea id="notes" name="notes" class="form-textarea" rows="4" placeholder="Let us know what topics or challenges you would like us to work on..."></textarea>
+              </div>
+
+              <button type="submit" id="submitBtn" class="btn btn-primary" style="width: 100%; font-size: 1rem; padding: 1rem;">
+                Submit Tutoring Inquiry
+              </button>
+            </form>
+
+            <div id="formSuccessNotice" class="status-box success">
+              <h3 style="margin-bottom: 0.5rem; font-size: 1.25rem;">Inquiry Received!</h3>
+              <p id="successSummaryText">Thank you! Your inquiry has been registered. We will review your student's goals and reach out to you within 24 hours.</p>
+              <div style="margin-top: 1.25rem;">
+                <button onclick="resetBookingForm()" class="btn btn-outline" style="font-size: 0.88rem; padding: 0.5rem 1.2rem;">Send Another Inquiry</button>
+              </div>
+            </div>
+
+            <!-- Parent Account & Automation Note -->
+            <div class="account-feature-note" style="margin-top: 2.5rem; padding: 1.5rem; background: rgba(2, 62, 138, 0.03); border: 1px solid rgba(2, 62, 138, 0.1); border-radius: var(--radius-md); display: flex; gap: 1rem; align-items: flex-start; text-align: left;">
+              <div style="flex-shrink: 0; background: var(--white); color: var(--primary-blue); padding: 0.6rem; border-radius: 50%; box-shadow: 0 4px 12px rgba(0,0,0,0.06);">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+              </div>
+              <div>
+                <h4 style="font-size: 0.95rem; font-weight: 700; color: var(--text-main); margin-bottom: 0.3rem;">Parent & Student Accounts</h4>
+                <p style="font-size: 0.88rem; color: var(--text-muted); line-height: 1.5; margin: 0;">Registering for an account allows you to securely save your child's details, streamline automatic session bookings, and seamlessly add multiple students into one central dashboard.</p>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <div id="view-support" class="view" style="padding-top: 90px;">
+      <section class="section">
+        <div class="container">
+          <div class="section-header fade-on-scroll">
+            <h1 style="font-size: clamp(2.3rem, 5vw, 3.4rem); letter-spacing: -0.03em; margin-bottom: 0.5rem;">Support & Student Hub</h1>
+            <p>Access our student companion app, study resources, and academic assistance.</p>
+          </div>
+
+          <div class="card fade-on-scroll delay-1" style="background: linear-gradient(135deg, #ffffff 0%, #f0f5fc 100%); border: 2px solid rgba(2, 62, 138, 0.15); box-shadow: var(--shadow-lg); padding: clamp(2rem, 4vw, 3.5rem); margin-bottom: 3rem;">
+            <div style="display: flex; flex-direction: column; gap: 1.25rem;">
+              <div style="display: inline-flex; align-items: center; gap: 0.5rem; background: var(--primary-blue-light); color: var(--primary-blue); border-radius: var(--radius-pill); padding: 0.35rem 1rem; width: fit-content; font-size: 0.82rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em;">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect><line x1="12" y1="18" x2="12.01" y2="18"></line></svg>
+                <span>Official Companion Web App</span>
+              </div>
+              
+              <h2 style="font-size: clamp(1.8rem, 3.5vw, 2.5rem); letter-spacing: -0.02em; color: var(--text-main);">School Tracker</h2>
+              
+              <p style="color: var(--text-muted); font-size: 1.1rem; max-width: 700px; line-height: 1.6;">
+                Built specifically for Geelong &amp; Surf Coast students to track homework deadlines, organize assessment tasks, log tutoring notes, and monitor subject milestones on any phone, tablet, or laptop.
+              </p>
+
+              <div style="display: flex; gap: 1rem; flex-wrap: wrap; margin-top: 0.75rem;">
+                <a href="https://ellsull10-sys.github.io/School-tracker/index.html" target="_blank" rel="noopener noreferrer" class="btn btn-primary" style="padding: 0.95rem 2rem; font-size: 1rem;">
+                  <span>Launch School Tracker</span>
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
+                </a>
+                <button onclick="navigateTo('contact')" class="btn btn-outline" style="padding: 0.95rem 1.8rem;">
+                  Need App Assistance?
+                </button>
+              </div>
+
+              <div style="margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid rgba(0, 0, 0, 0.08); display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.25rem;">
+                <div style="background: rgba(255, 255, 255, 0.7); border-radius: var(--radius-sm); padding: 1.1rem; border: 1px solid rgba(0,0,0,0.05);">
+                  <strong style="color: var(--text-main); font-size: 0.92rem; display: block; margin-bottom: 0.3rem;">iPhone / iPad Setup</strong>
+                  <span style="font-size: 0.85rem; color: var(--text-muted); line-height: 1.45; display: block;">Open the tracker in Safari, tap the <strong>Share</strong> button, then select <strong>Add to Home Screen</strong> for a full app experience.</span>
+                </div>
+                <div style="background: rgba(255, 255, 255, 0.7); border-radius: var(--radius-sm); padding: 1.1rem; border: 1px solid rgba(0,0,0,0.05);">
+                  <strong style="color: var(--text-main); font-size: 0.92rem; display: block; margin-bottom: 0.3rem;">Android / Chrome Setup</strong>
+                  <span style="font-size: 0.85rem; color: var(--text-muted); line-height: 1.45; display: block;">Open the link in Chrome, tap the <strong>three dots (&vellip;)</strong> menu at the top right, and choose <strong>Install App</strong> or <strong>Add to Home screen</strong>.</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="grid-3">
+            <div class="card fade-on-scroll delay-1">
+              <div>
+                <div class="discipline-icon" style="margin-bottom: 1rem;">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+                </div>
+                <h3>Session Scheduling</h3>
+                <p style="margin: 0.5rem 0 1.25rem;">Need to reschedule a session or adjust your weekly lesson time? Reach out directly with at least 24 hours notice.</p>
+              </div>
+              <button onclick="navigateTo('contact')" class="btn btn-outline" style="width: 100%;">Message Team</button>
+            </div>
+
+            <div class="card fade-on-scroll delay-2">
+              <div>
+                <div class="discipline-icon" style="margin-bottom: 1rem;">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+                </div>
+                <h3>Curriculum &amp; Practice</h3>
+                <p style="margin: 0.5rem 0 1.25rem;">Looking for extra problem sheets, practice essays, or test revision material between tutoring sessions?</p>
+              </div>
+              <button onclick="navigateTo('contact')" class="btn btn-outline" style="width: 100%;">Request Worksheets</button>
+            </div>
+
+            <div class="card fade-on-scroll delay-3">
+              <div>
+                <div class="discipline-icon" style="margin-bottom: 1rem;">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                </div>
+                <h3>Tutor Consultation</h3>
+                <p style="margin: 0.5rem 0 1.25rem;">Want to discuss your student's report card or term goals with Flynn Pretlove and the leadership team?</p>
+              </div>
+              <a href="mailto:placeholder@email.com" class="btn btn-outline" style="width: 100%; text-decoration: none;">Email Flynn &rarr;</a>
+            </div>
+          </div>
+
+        </div>
+      </section>
+    </div>
 
   </main>
 
-  <footer style="text-align: center; padding: 4rem 2rem; color: var(--text-muted); font-size: 0.9rem;">
-    <p>&copy; 2026 Teen Tutors. All rights reserved.</p>
-    <p style="margin-top: 0.5rem; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px;">By students, for students</p>
+  <footer>
+    <div class="container">
+      <p>&copy; 2026 Teen Tutors &bull; <em>By students, for students</em> &bull; Geelong & Surf Coast, Victoria. All rights reserved.</p>
+      <p style="font-size: 0.75rem; margin-top: 0.5rem; opacity: 0.7;">By E.S Studios</p>
+    </div>
   </footer>
 
-  <!-- =========================================
-       JAVASCRIPT LOGIC
-       ========================================= -->
+  <!-- BOUNCY MODAL OVERLAY -->
+  <div class="bouncy-modal-overlay" id="subjectModalOverlay" onclick="closeSubjectModal(event)">
+    <div class="bouncy-modal-content" id="subjectModalContent">
+      <button class="modal-close-btn" aria-label="Close details" onclick="closeSubjectModal(event, true)">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+      </button>
+      <div id="modal-body-injection">
+        <!-- Injected via JS -->
+      </div>
+    </div>
+  </div>
+
   <script>
-    /* SPA NAVIGATION LOGIC */
-    function navigateTo(viewId) {
-      // Hide all views
-      document.querySelectorAll('.view-section').forEach(section => {
-        section.classList.remove('active');
+    /* Global router for Single-Page navigation */
+    function navigateTo(targetView) {
+      const views = document.querySelectorAll('.view');
+      views.forEach(view => {
+        view.classList.remove('active');
       });
-      // Show targeted view
-      const target = document.getElementById('view-' + viewId);
-      if(target) target.classList.add('active');
 
-      // Update Nav highlighting
-      document.querySelectorAll('.nav-links a').forEach(link => {
-        link.classList.remove('active');
+      const activeView = document.getElementById('view-' + targetView);
+      if (activeView) {
+        activeView.classList.add('active');
+      }
+
+      const desktopLinks = document.querySelectorAll('.nav-link');
+      desktopLinks.forEach(link => {
+        link.classList.toggle('active', link.getAttribute('data-target') === targetView);
       });
-      const activeLink = document.getElementById('nav-' + viewId);
-      if(activeLink) activeLink.classList.add('active');
 
-      // Scroll to top & re-trigger animations
-      window.scrollTo(0, 0);
-      initScrollAnimations();
+      const mobileLinks = document.querySelectorAll('.mobile-nav-link');
+      mobileLinks.forEach(link => {
+        link.classList.toggle('active', link.getAttribute('data-target') === targetView);
+      });
+
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+
+      setTimeout(() => { triggerScrollAnimations(); }, 50);
     }
 
-    /* MOBILE MENU LOGIC */
+    function prefillAndBook(tierValue) {
+      navigateTo('contact');
+      setTimeout(() => {
+        const select = document.getElementById('studentYear');
+        if (select) { select.value = tierValue; }
+      }, 150);
+    }
+
     function toggleMobileMenu() {
-      document.getElementById('mobileDrawer').classList.toggle('open');
-      document.getElementById('hamburgerBtn').classList.toggle('open');
+      const drawer = document.getElementById('mobileDrawer');
+      const hamburger = document.getElementById('hamburgerBtn');
+      drawer.classList.toggle('open');
+      hamburger.classList.toggle('open');
     }
 
-    /* NAVBAR SHADOW ON SCROLL */
-    window.addEventListener('scroll', () => {
-      const nav = document.getElementById('navbar');
-      if (window.scrollY > 50) nav.classList.add('scrolled');
-      else nav.classList.remove('scrolled');
-    });
+    function navigateMobile(targetView) {
+      toggleMobileMenu();
+      navigateTo(targetView);
+    }
 
-    /* SCROLL ANIMATIONS (INTERSECTION OBSERVER) */
+    /* Progressive Scroll Intersection Observer */
     let observer;
-    function initScrollAnimations() {
-      if(observer) observer.disconnect();
-      
-      const elements = document.querySelectorAll('.fade-on-scroll');
-      elements.forEach(el => el.classList.remove('is-visible'));
 
-      observer = new IntersectionObserver((entries) => {
+    function initScrollObserver() {
+      if (observer) { observer.disconnect(); }
+
+      const observerOptions = {
+        root: null,
+        rootMargin: '0px 0px -40px 0px',
+        threshold: 0.08
+      };
+
+      observer = new IntersectionObserver((entries, obs) => {
         entries.forEach(entry => {
           if (entry.isIntersecting) {
             entry.target.classList.add('is-visible');
-            observer.unobserve(entry.target);
+            obs.unobserve(entry.target);
           }
         });
-      }, { rootMargin: '0px 0px -40px 0px', threshold: 0.08 });
+      }, observerOptions);
 
-      elements.forEach(el => observer.observe(el));
+      triggerScrollAnimations();
     }
 
-    /* FORM HANDLING TO MAILTO */
+    function triggerScrollAnimations() {
+      const currentActiveView = document.querySelector('.view.active');
+      if (!currentActiveView || !observer) return;
+
+      const animatedElements = currentActiveView.querySelectorAll('.fade-on-scroll');
+      animatedElements.forEach(el => {
+        const rect = el.getBoundingClientRect();
+        if (rect.top < window.innerHeight - 30) {
+          el.classList.add('is-visible');
+        } else {
+          observer.observe(el);
+        }
+      });
+    }
+
+    /* Form Handler */
     function handleFormSubmit(e) {
       e.preventDefault();
       
-      const name = document.getElementById('parentName').value;
-      const year = document.getElementById('studentYear').value;
-      const subject = document.getElementById('subjectInterest').value;
+      const parentName = document.getElementById('parentName').value;
+      const email = document.getElementById('contactEmail').value;
+      const yearSelect = document.getElementById('studentYear');
+      const yearText = yearSelect.options[yearSelect.selectedIndex].text;
+      const subjectSelect = document.getElementById('subjectSelect');
+      const subjectText = subjectSelect.options[subjectSelect.selectedIndex].text;
       const notes = document.getElementById('notes').value;
-      
-      const emailTo = 'placeholder@email.com'; // CHANGE THIS TO YOUR ACTUAL EMAIL
-      const subjectLine = encodeURIComponent(`New Tutoring Inquiry: ${name} - ${subject}`);
-      const body = encodeURIComponent(
-        `Hi Teen Tutors,\n\nI would like to inquire about a tutoring session.\n\n` +
-        `Parent Name: ${name}\n` +
-        `Student Year: ${year}\n` +
-        `Subject: ${subject}\n\n` +
-        `Notes/Goals: ${notes}\n\n` +
-        `Please let me know your availability.\nThanks!`
+
+      const submitBtn = document.getElementById('submitBtn');
+      submitBtn.innerText = "Submitting..."; submitBtn.disabled = true;
+
+      const subjectLine = encodeURIComponent(`New Tutoring Inquiry from ${parentName} (${yearText})`);
+      const bodyContent = encodeURIComponent(
+        `Parent Name: ${parentName}\n` +
+        `Parent Email: ${email}\n` +
+        `Student Level: ${yearText}\n` +
+        `Subject Focus: ${subjectText}\n\n` +
+        `Goals & Notes:\n${notes || 'None provided'}`
       );
       
-      const mailtoLink = `mailto:${emailTo}?subject=${subjectLine}&body=${body}`;
+      const targetEmail = "placeholder@email.com";
+
+      setTimeout(() => {
+        const form = document.getElementById('contactForm');
+        const notice = document.getElementById('formSuccessNotice');
+        const summary = document.getElementById('successSummaryText');
+        
+        form.style.display = 'none';
+        summary.innerHTML = `Thank you, <strong>${parentName}</strong>! Your inquiry for <em>${subjectText} (${yearText})</em> has been recorded.<br><br>` +
+          `<a href="mailto:${targetEmail}?subject=${subjectLine}&body=${bodyContent}" class="btn btn-outline" style="margin-top: 0.5rem; font-size: 0.85rem; padding: 0.5rem 1rem;">` +
+          `Click here to open email draft directly &rarr;</a>`;
+        
+        notice.style.display = 'block';
+        submitBtn.innerText = "Submit Tutoring Inquiry"; submitBtn.disabled = false;
+      }, 400);
+    }
+
+    function resetBookingForm() {
+      const form = document.getElementById('contactForm');
+      const notice = document.getElementById('formSuccessNotice');
+      form.reset();
+      form.style.display = 'block';
+      notice.style.display = 'none';
+    }
+
+    /* Initialize event listeners and observers on document load */
+    document.addEventListener("DOMContentLoaded", () => {
+      initScrollObserver();
+
+      window.addEventListener('scroll', () => {
+        triggerScrollAnimations();
+      }, { passive: true });
+
+      const slider = document.getElementById('pricingSlider');
+      const btnLeft = document.getElementById('slideLeft');
+      const btnRight = document.getElementById('slideRight');
+
+      if (slider && btnLeft && btnRight) {
+        const getCardWidth = () => {
+          const firstSlide = slider.querySelector('.slide');
+          return firstSlide ? firstSlide.offsetWidth + 24 : 300;
+        };
+        btnLeft.addEventListener('click', () => { slider.scrollBy({ left: -getCardWidth(), behavior: 'smooth' }); });
+        btnRight.addEventListener('click', () => { slider.scrollBy({ left: getCardWidth(), behavior: 'smooth' }); });
+      }
+
+      window.addEventListener('resize', () => {
+        if (window.innerWidth > 768) {
+          const drawer = document.getElementById('mobileDrawer');
+          const hamburger = document.getElementById('hamburgerBtn');
+          if (drawer) drawer.classList.remove('open');
+          if (hamburger) hamburger.classList.remove('open');
+        }
+      });
       
-      document.getElementById('bookingForm').style.display = 'none';
-      document.getElementById('success-message').style.display = 'block';
-      document.getElementById('emailDraftBtn').href = mailtoLink;
-    }
+      renderSubjectTabs();
+      renderSubCategories(curriculumData[0].id); // Render first category by default
+    });
 
-    function resetForm() {
-      document.getElementById('bookingForm').reset();
-      document.getElementById('bookingForm').style.display = 'block';
-      document.getElementById('success-message').style.display = 'none';
-    }
-
-    /* VICTORIAN CURRICULUM DATA & RENDERER */
     const curriculumData = [
       {
-        id: 'english', title: 'English',
-        icon: '<path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>',
+        id: 'english',
+        title: 'English',
         subcategories: [
           {
-            title: 'English Core', years: 'Levels Prep - 10',
-            desc: 'Focuses on building foundational literacy. In primary years, this encompasses phonics, guided reading, and basic sentence structure.',
+            title: 'English Core',
+            years: 'Levels Prep - 10',
+            desc: 'Focuses on building foundational literacy. In primary years, this encompasses phonics, guided reading, and basic sentence structure. Progresses into deep literary analysis and essay construction.',
             quote: 'The English curriculum helps students to engage imaginatively and critically with literature to expand the scope of their experience.',
             pdfLink: 'https://victoriancurriculum.vcaa.vic.edu.au/english/english/introduction/scope-and-sequence',
-            tutors: ['Flynn Pretlove', 'General Mentors']
+            tutors: ['Flynn Pretlove']
           },
           {
-            title: 'EAL (Additional Language)', years: 'Levels Prep - 10',
+            title: 'EAL (Additional Language)',
+            years: 'Levels Prep - 10',
             desc: 'Specialized support for students whose primary language is not English, adapting core literacy skills to build communicative confidence.',
             quote: 'EAL students enter Australian schools with varying levels of prior education and knowledge of English. The curriculum supports their transition.',
             pdfLink: 'https://victoriancurriculum.vcaa.vic.edu.au/english/english-as-an-additional-language-eal/introduction/scope-and-sequence',
-            tutors: ['General Mentors']
+            tutors: []
           }
         ]
       },
       {
-        id: 'math', title: 'Mathematics',
-        icon: '<line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line>',
+        id: 'math',
+        title: 'Mathematics',
         subcategories: [
           {
-            title: 'Mathematics Core', years: 'Levels Prep - 10',
+            title: 'Mathematics Core',
+            years: 'Levels Prep - 10',
             desc: 'Covers Number and Algebra, Measurement and Space, and Statistics and Probability. Early levels focus heavily on counting and spatial awareness.',
             quote: 'Mathematics provides students with access to important mathematical ideas, knowledge and skills that they will draw on in their personal and work lives.',
             pdfLink: 'https://victoriancurriculum.vcaa.vic.edu.au/mathematics/introduction/scope-and-sequence',
@@ -802,52 +1270,74 @@
         ]
       },
       {
-        id: 'science', title: 'Science',
-        icon: '<path d="M10 2v7.31"></path><path d="M14 9.3V2"></path><path d="M8.5 2h7"></path><path d="M14 9.3a6.5 6.5 0 1 1-4 0"></path><path d="M5.52 16h12.96"></path>',
+        id: 'science',
+        title: 'Science',
         subcategories: [
           {
-            title: 'Biological Sciences', years: 'Levels Prep - 10',
-            desc: 'Often integrated into general "Inquiry" units in primary school, evolving into specific life sciences in high school.',
+            title: 'Biological Sciences',
+            years: 'Levels Prep - 10',
+            desc: 'Understanding living things, life cycles, and ecosystems. Often integrated into general "Inquiry" units in primary school.',
             quote: 'Biological sciences understanding focuses on living things, their life cycles, structural features, and how they interact with their environments.',
             pdfLink: 'https://victoriancurriculum.vcaa.vic.edu.au/science/introduction/scope-and-sequence',
-            tutors: ['General Mentors']
+            tutors: []
           },
           {
-            title: 'Physical Sciences', years: 'Levels Prep - 10',
+            title: 'Chemical Sciences',
+            years: 'Levels Prep - 10',
+            desc: 'Exploring materials, their properties, and how they change. Moves from mixing simple materials to understanding atomic structure.',
+            quote: 'Chemical sciences understanding focuses on the composition and behaviour of substances.',
+            pdfLink: 'https://victoriancurriculum.vcaa.vic.edu.au/science/introduction/scope-and-sequence',
+            tutors: []
+          },
+          {
+            title: 'Earth & Space Sciences',
+            years: 'Levels Prep - 10',
+            desc: 'Learning about the Earth, the solar system, weather patterns, and the universe.',
+            quote: 'Earth and space sciences understanding focuses on Earth’s dynamic structure and its place in the cosmos.',
+            pdfLink: 'https://victoriancurriculum.vcaa.vic.edu.au/science/introduction/scope-and-sequence',
+            tutors: []
+          },
+          {
+            title: 'Physical Sciences',
+            years: 'Levels Prep - 10',
             desc: 'The study of forces, motion, and energy. Early concepts include pushing, pulling, light, and sound.',
             quote: 'Physical sciences provides an empirical way of understanding forces, motion, and the transfer and transformation of energy.',
             pdfLink: 'https://victoriancurriculum.vcaa.vic.edu.au/science/introduction/scope-and-sequence',
-            tutors: ['General Mentors']
+            tutors: []
           }
         ]
       },
       {
-        id: 'humanities', title: 'Humanities',
-        icon: '<circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>',
+        id: 'humanities',
+        title: 'Humanities',
         subcategories: [
           {
-            title: 'Economics & Business', years: 'Levels 5 - 10',
-            desc: 'Introduced in Grade 5 to teach consumer basics, business models, and financial literacy.',
-            quote: 'Economics and Business explores the ways in which individuals, families, the community, businesses and governments make decisions.',
-            pdfLink: 'https://victoriancurriculum.vcaa.vic.edu.au/the-humanities/economics-and-business/introduction/scope-and-sequence',
-            tutors: ['Flynn Pretlove']
-          },
-          {
-            title: 'History', years: 'Levels Prep - 10',
+            title: 'History',
+            years: 'Levels Prep - 10',
             desc: 'Explores family histories in primary years, expanding to global and Australian historical events in secondary levels.',
             quote: 'History is a disciplined process of inquiry into the past that develops students\' curiosity and imagination.',
             pdfLink: 'https://victoriancurriculum.vcaa.vic.edu.au/the-humanities/history/introduction/scope-and-sequence',
             tutors: ['Flynn Pretlove']
           },
           {
-            title: 'Geography', years: 'Levels Prep - 10',
+            title: 'Geography',
+            years: 'Levels Prep - 10',
             desc: 'Studies places, environments, and human interactions from local environments to global concepts.',
             quote: 'Geography is a structured way of exploring, analysing and understanding the characteristics of the places that make up our world.',
             pdfLink: 'https://victoriancurriculum.vcaa.vic.edu.au/the-humanities/geography/introduction/scope-and-sequence',
             tutors: ['Flynn Pretlove']
           },
           {
-            title: 'Civics & Citizenship', years: 'Levels 3 - 10',
+            title: 'Economics & Business',
+            years: 'Levels 5 - 10',
+            desc: 'Introduced in Grade 5 to teach consumer basics, business models, and financial literacy.',
+            quote: 'Economics and Business explores the ways in which individuals, families, the community, businesses and governments make decisions.',
+            pdfLink: 'https://victoriancurriculum.vcaa.vic.edu.au/the-humanities/economics-and-business/introduction/scope-and-sequence',
+            tutors: ['Flynn Pretlove']
+          },
+          {
+            title: 'Civics & Citizenship',
+            years: 'Levels 3 - 10',
             desc: 'Explores government, laws, and democratic processes, starting from community rules in Year 3.',
             quote: 'Civics and Citizenship is essential in enabling students to become active and informed citizens who participate in and sustain Australia\'s democracy.',
             pdfLink: 'https://victoriancurriculum.vcaa.vic.edu.au/the-humanities/civics-and-citizenship/introduction/scope-and-sequence',
@@ -856,146 +1346,172 @@
         ]
       },
       {
-        id: 'technologies', title: 'Technologies',
-        icon: '<path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line>',
+        id: 'arts',
+        title: 'The Arts',
+        subcategories: [
+          { title: 'Visual Arts', years: 'Levels Prep - 10', desc: 'Encourages creative expression through mediums like painting, drawing, and digital media.', quote: 'Students create visual art works that communicate, challenge and express ideas.', pdfLink: 'https://victoriancurriculum.vcaa.vic.edu.au/the-arts/visual-arts/introduction/scope-and-sequence', tutors: [] },
+          { title: 'Drama', years: 'Levels Prep - 10', desc: 'Focuses on storytelling, character development, and performance skills.', quote: 'Students explore and depict real and fictional worlds through use of body language.', pdfLink: 'https://victoriancurriculum.vcaa.vic.edu.au/the-arts/drama/introduction/scope-and-sequence', tutors: [] },
+          { title: 'Music', years: 'Levels Prep - 10', desc: 'Exploration of rhythm, pitch, and musical composition.', quote: 'Music has the capacity to engage, inspire and enrich all students.', pdfLink: 'https://victoriancurriculum.vcaa.vic.edu.au/the-arts/music/introduction/scope-and-sequence', tutors: [] },
+          { title: 'Dance', years: 'Levels Prep - 10', desc: 'Movement, choreography, and physical expression.', quote: 'Dance involves the body as an instrument of expression.', pdfLink: 'https://victoriancurriculum.vcaa.vic.edu.au/the-arts/dance/introduction/scope-and-sequence', tutors: [] },
+          { title: 'Media Arts', years: 'Levels Prep - 10', desc: 'Creating and analyzing digital media, film, and interactive content.', quote: 'Media Arts explores the ways in which technologies are used to create media artworks.', pdfLink: 'https://victoriancurriculum.vcaa.vic.edu.au/the-arts/media-arts/introduction/scope-and-sequence', tutors: [] },
+          { title: 'Visual Communication Design', years: 'Levels 7 - 10', desc: 'Graphic design, technical drawing, and visual messaging.', quote: 'Students use visual communication design knowledge to convey ideas and information.', pdfLink: 'https://victoriancurriculum.vcaa.vic.edu.au/the-arts/visual-communication-design/introduction/scope-and-sequence', tutors: [] }
+        ]
+      },
+      {
+        id: 'health',
+        title: 'Health & PE',
         subcategories: [
           {
-            title: 'Digital Technologies', years: 'Levels Prep - 10',
+            title: 'Health & Physical Education',
+            years: 'Levels Prep - 10',
+            desc: 'Covers physical fitness, personal health, relationships, motor skills, and wellbeing strategies.',
+            quote: 'Health and Physical Education focuses on students enhancing their own and others\' health, safety, wellbeing and physical activity participation.',
+            pdfLink: 'https://victoriancurriculum.vcaa.vic.edu.au/health-and-physical-education/introduction/scope-and-sequence',
+            tutors: []
+          }
+        ]
+      },
+      {
+        id: 'languages',
+        title: 'Languages',
+        subcategories: [
+          {
+            title: 'Languages',
+            years: 'Levels Prep - 10',
+            desc: 'Foundational learning of a second language, fostering intercultural capability and communication across various global languages.',
+            quote: 'Learning languages broadens students\' horizons in relation to the personal, social, cultural and employment opportunities.',
+            pdfLink: 'https://victoriancurriculum.vcaa.vic.edu.au/languages/introduction/scope-and-sequence',
+            tutors: []
+          }
+        ]
+      },
+      {
+        id: 'technologies',
+        title: 'Technologies',
+        subcategories: [
+          {
+            title: 'Digital Technologies',
+            years: 'Levels Prep - 10',
             desc: 'Focuses on algorithmic thinking, data representation, and creating digital solutions.',
             quote: 'Digital Technologies empowers students to shape change by influencing how contemporary information systems are applied.',
             pdfLink: 'https://victoriancurriculum.vcaa.vic.edu.au/technologies/digital-technologies/introduction/scope-and-sequence',
-            tutors: ['General Mentors']
+            tutors: []
           },
           {
-            title: 'Design & Technologies', years: 'Levels Prep - 10',
+            title: 'Design & Technologies',
+            years: 'Levels Prep - 10',
             desc: 'Explores materials, systems, and tools to design and create products or environments.',
             quote: 'Design and Technologies actively engages students in creating quality designed solutions for identified needs and opportunities.',
             pdfLink: 'https://victoriancurriculum.vcaa.vic.edu.au/technologies/design-and-technologies/introduction/scope-and-sequence',
-            tutors: ['General Mentors']
-          }
-        ]
-      },
-      {
-        id: 'arts', title: 'The Arts',
-        icon: '<path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path>',
-        subcategories: [
-          {
-            title: 'Visual Arts', years: 'Levels Prep - 10',
-            desc: 'Encourages creative expression through various mediums such as painting, drawing, and digital media.',
-            quote: 'Visual Arts includes the fields of art, craft and design. Students create visual art works that communicate, challenge and express their own and others\' ideas.',
-            pdfLink: 'https://victoriancurriculum.vcaa.vic.edu.au/the-arts/visual-arts/introduction/scope-and-sequence',
-            tutors: ['General Mentors']
-          },
-          {
-            title: 'Drama', years: 'Levels Prep - 10',
-            desc: 'Focuses on storytelling, character development, and performance skills.',
-            quote: 'In Drama, students explore and depict real and fictional worlds through use of body language, gesture and space to make meaning as performers and audience.',
-            pdfLink: 'https://victoriancurriculum.vcaa.vic.edu.au/the-arts/drama/introduction/scope-and-sequence',
-            tutors: ['General Mentors']
-          }
-        ]
-      },
-      {
-        id: 'health', title: 'Health & Phys Ed',
-        icon: '<path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>',
-        subcategories: [
-          {
-            title: 'Health & Wellbeing', years: 'Levels Prep - 10',
-            desc: 'Covers physical fitness, personal health, relationships, and wellbeing strategies.',
-            quote: 'Health and Physical Education focuses on students enhancing their own and others\' health, safety, wellbeing and physical activity participation.',
-            pdfLink: 'https://victoriancurriculum.vcaa.vic.edu.au/health-and-physical-education/introduction/scope-and-sequence',
-            tutors: ['General Mentors']
-          }
-        ]
-      },
-      {
-        id: 'languages', title: 'Languages',
-        icon: '<circle cx="12" cy="12" r="10"></circle><path d="M2 12h20"></path><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1 4-10z"></path>',
-        subcategories: [
-          {
-            title: 'Introduction to Languages', years: 'Levels Prep - 10',
-            desc: 'Foundational learning of a second language, fostering intercultural capability and communication.',
-            quote: 'Learning languages broadens students\' horizons in relation to the personal, social, cultural and employment opportunities that an increasingly interconnected and interdependent world presents.',
-            pdfLink: 'https://victoriancurriculum.vcaa.vic.edu.au/languages/introduction/scope-and-sequence',
-            tutors: ['General Mentors']
+            tutors: []
           }
         ]
       }
     ];
 
-    function renderCurriculum() {
-      const container = document.getElementById('curriculum-container');
+    let currentActiveSubject = 'english';
+
+    function renderSubjectTabs() {
+      const navContainer = document.getElementById('subject-nav');
+      if (!navContainer) return;
+
+      navContainer.innerHTML = curriculumData.map(category => `
+        <button class="subject-tab ${category.id === currentActiveSubject ? 'active' : ''}" 
+                onclick="handleTabClick('${category.id}')"
+                id="tab-${category.id}">
+          ${category.title}
+        </button>
+      `).join('');
+    }
+
+    function handleTabClick(subjectId) {
+      currentActiveSubject = subjectId;
+      renderSubjectTabs(); 
+      
+      const grid = document.getElementById('sub-category-container');
+      grid.style.opacity = 0;
+      grid.style.transform = 'translateY(10px)';
+      
+      setTimeout(() => {
+        renderSubCategories(subjectId);
+        grid.style.transition = 'all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)';
+        grid.style.opacity = 1;
+        grid.style.transform = 'translateY(0)';
+      }, 150);
+    }
+
+    function renderSubCategories(subjectId) {
+      const container = document.getElementById('sub-category-container');
       if (!container) return;
+      
+      const category = curriculumData.find(c => c.id === subjectId);
+      if (!category) return;
 
-      container.innerHTML = curriculumData.map(category => `
-        <div class="bento-card">
-          <div class="bento-header">
-            <div class="bento-header-icon">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${category.icon}</svg>
-            </div>
-            <h3>${category.title}</h3>
-          </div>
-          <div class="bento-accordions">
-            ${category.subcategories.map((sub, index) => {
-              const uniqueId = `${category.id}-${index}`;
-              const tutorHTML = sub.tutors.map(tutor => {
-                const isFlynn = tutor.includes('Flynn');
-                const cursorStyle = isFlynn ? 'cursor: pointer;' : 'cursor: default;';
-                const clickHandler = isFlynn ? `onclick="navigateToTutor('tutor-flynn-pretlove')"` : '';
-                const hoverClass = isFlynn ? 'tutor-chip-interactive' : '';
-                
-                return `
-                <div class="tutor-chip ${hoverClass}" style="${cursorStyle}" ${clickHandler} title="${isFlynn ? 'View Profile' : ''}">
-                  <div class="tutor-avatar">${tutor.charAt(0)}</div>
-                  <span>${tutor}</span>
-                </div>
-              `;
-              }).join('');
-
-              return `
-              <div class="accordion-item" id="acc-${uniqueId}">
-                <button class="accordion-header" onclick="toggleAccordion('acc-${uniqueId}')">
-                  ${sub.title}
-                  <svg class="chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
-                </button>
-                <div class="accordion-content-wrapper">
-                  <div class="accordion-content">
-                    <div class="accordion-inner">
-                      <div class="accordion-years">${sub.years}</div>
-                      <p class="accordion-desc">${sub.desc}</p>
-                      <div class="accordion-quote">"${sub.quote}"</div>
-                      
-                      <div class="tutor-assigned">
-                        <span class="tutor-assigned-label">Assigned Tutors:</span>
-                        <div style="display: flex; gap: 0.75rem; flex-wrap: wrap;">
-                          ${tutorHTML}
-                        </div>
-                      </div>
-
-                      <a href="${sub.pdfLink}" target="_blank" rel="noopener noreferrer" class="pdf-link">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
-                        View Official VCAA Scope & Sequence
-                      </a>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              `;
-            }).join('')}
+      container.innerHTML = category.subcategories.map((sub, index) => `
+        <div class="sub-cat-card" onclick="openSubjectModal('${subjectId}', ${index})">
+          <h3 class="sub-cat-title">${sub.title}</h3>
+          <p class="sub-cat-preview">${sub.desc}</p>
+          <div class="view-details-btn">
+            View details
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
           </div>
         </div>
       `).join('');
     }
 
-    function toggleAccordion(id) {
-      const item = document.getElementById(id);
-      const parentBento = item.closest('.bento-card');
-      const siblings = parentBento.querySelectorAll('.accordion-item');
+    function openSubjectModal(subjectId, subIndex) {
+      const category = curriculumData.find(c => c.id === subjectId);
+      const sub = category.subcategories[subIndex];
       
-      siblings.forEach(sib => {
-        if (sib.id !== id) { sib.classList.remove('open'); }
-      });
-      item.classList.toggle('open');
+      let tutorHTML;
+      if (sub.tutors && sub.tutors.length > 0) {
+        tutorHTML = sub.tutors.map(tutor => {
+          const isFlynn = tutor.includes('Flynn');
+          const cursorStyle = isFlynn ? 'cursor: pointer;' : 'cursor: default;';
+          const clickHandler = isFlynn ? `onclick="navigateToTutor('tutor-flynn-pretlove'); closeSubjectModal(event, true);"` : '';
+          const hoverClass = isFlynn ? 'tutor-chip-interactive' : '';
+          
+          return `
+          <div class="tutor-chip ${hoverClass}" style="${cursorStyle}" ${clickHandler} title="${isFlynn ? 'View Profile' : ''}">
+            <div class="tutor-avatar">${tutor.charAt(0)}</div>
+            <span>${tutor}</span>
+          </div>
+          `;
+        }).join('');
+      } else {
+        tutorHTML = `<div class="tutor-chip no-tutor"><span>No tutors currently assigned</span></div>`;
+      }
+
+      const modalHtml = `
+        <h2 style="font-size: 1.8rem; font-weight: 800; color: var(--text-main); margin-bottom: 0.5rem; letter-spacing:-0.02em;">${sub.title}</h2>
+        <div class="modal-years">${sub.years}</div>
+        
+        <p class="modal-desc">${sub.desc}</p>
+        <div class="modal-quote">"${sub.quote}"</div>
+        
+        <div class="tutor-assigned">
+          <span class="tutor-assigned-label">Assigned Tutors:</span>
+          <div style="display: flex; gap: 0.75rem; flex-wrap: wrap;">
+            ${tutorHTML}
+          </div>
+        </div>
+
+        <a href="${sub.pdfLink}" target="_blank" rel="noopener noreferrer" class="pdf-link">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+          View Official VCAA Scope & Sequence
+        </a>
+      `;
+
+      document.getElementById('modal-body-injection').innerHTML = modalHtml;
+      document.getElementById('subjectModalOverlay').classList.add('open');
+      document.body.style.overflow = 'hidden'; 
+    }
+
+    function closeSubjectModal(event, forceClose = false) {
+      if (forceClose || event.target.id === 'subjectModalOverlay') {
+        document.getElementById('subjectModalOverlay').classList.remove('open');
+        document.body.style.overflow = '';
+      }
     }
 
     function navigateToTutor(elementId) {
@@ -1007,9 +1523,11 @@
           const elementPosition = targetElement.getBoundingClientRect().top;
           const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
           
-          window.scrollTo({ top: offsetPosition, behavior: "smooth" });
+          window.scrollTo({
+               top: offsetPosition,
+               behavior: "smooth"
+          });
           
-          // Flash animation
           targetElement.style.transition = 'box-shadow 0.4s ease, transform 0.4s ease';
           targetElement.style.boxShadow = '0 0 0 4px var(--primary-blue), var(--shadow-lg)';
           targetElement.style.transform = 'scale(1.02)';
@@ -1021,12 +1539,6 @@
         }
       }, 350);
     }
-
-    /* INITIALIZE APP ON LOAD */
-    window.addEventListener('DOMContentLoaded', () => {
-      renderCurriculum();
-      initScrollAnimations();
-    });
   </script>
 </body>
 </html>
